@@ -1,2 +1,21 @@
+# ignore the bootstrap folder
 bootstrap/
+
+# ignore the virtual environment directory
 myenv/
+
+# Ignore other typical files and directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.pot
+*.mo
+*.swp
+.DS_Store
+.idea/
+.vscode/
+*.bak
+*.orig
