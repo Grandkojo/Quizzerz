@@ -19,3 +19,6 @@ __pycache__/
 .vscode/
 *.bak
 *.orig
+
+#environment variables
+.env

@@ -1,4 +1,4 @@
-from flask import Flask, url_for, jsonify, render_template, redirect, session, request
+from flask import Flask, url_for, jsonify, render_template, redirect, session
 import requests
 from dotenv import load_dotenv
 from authlib.integrations.flask_client import OAuth
@@ -14,12 +14,11 @@ app.secret_key = os.getenv('FLASK_SECRET', str(uuid.uuid4()))
 
 # Initialize OAuth
 oauth = OAuth(app)
-
-Quizzerz = oauth.register(
+oauth.register(
     name="Quizzerz",
-    server_metadata_url=os.getenv('OAUTH2_META_URL'),
     client_id=os.getenv('OAUTH2_CLIENT_ID'),
     client_secret=os.getenv('OAUTH2_CLIENT_SECRET'),
+    server_metadata_url=os.getenv('OAUTH2_META_URL'),
     client_kwargs={"scope": "openid profile email https://www.googleapis.com/auth/user.gender.read"}
 )
 
@@ -29,16 +28,13 @@ def home():
 
 @app.route("/google-login")
 def google_login():
-    redirect_uri = url_for("authorize", _external=True)
-    Quizzerz = oauth.create_client('Quizzerz')
-    return Quizzerz.authorize_redirect(redirect_uri)
+    return oauth.Quizzerz.authorize_redirect(redirect_uri=url_for("google_callback", _external=True))
 
-@app.route("/authorize")
-def authorize():
-    Quizzerz = oauth.create_client('Quizzerz')
-    token = Quizzerz.authorize_access_token()
-    personal_data_url = "https://people.googleapis.com/v1/people/me?personFields=genders"
-    
+@app.route("/signin-google")
+def google_callback():
+    token = oauth.Quizzerz.authorize_access_token()
+    personal_data_url = "https://people.google.com/v1/people/me?personFields=genders"
+
     gender = requests.get(
         personal_data_url,
         headers={"Authorization": f"Bearer {token['access_token']}"}).json()

@@ -1,4 +1,7 @@
-Flask
+flask
+authlib
+requests
+python-dotenv
 # Flask-Login
 # Flask-OAuthlib
 # Flask-Bcrypt
