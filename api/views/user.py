@@ -56,7 +56,7 @@ def google_login():
 
 @user_blueprint.route("/authorize")
 def authorize():
-    from app import oauth  # Import here to avoid circular import
+    from app import oauth  # avoid circular import
     token = oauth.Quizzerz.authorize_access_token()
     personal_data_url = "https://people.googleapis.com/v1/people/me?personFields=genders"
     
