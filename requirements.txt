@@ -2,6 +2,7 @@ flask
 authlib
 requests
 python-dotenv
+pytest
 # Flask-Login
 # Flask-OAuthlib
 # Flask-Bcrypt

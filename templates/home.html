@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizzers</title>
+    <title>Quizzerz</title>
 </head>
 <body>
-    {% if session %}
+    <h3>Your'e finally welcome :)</h3>
     <p><a href="{{ url_for('logout') }}">Logout</a></p>
+    {% if session %}
+    {% if method == "google" %}
+    <h3>Logged in from google</h3>
     <div><pre>{{ pretty }}</pre></div>
-    {% else %}
-    <p><a href="{{ url_for('google_login') }}">Login with Google</a></p>
+    {% endif %}
+
+    {% if method == "quizzerz" %}
+    <h3>Signed up with quizzerz</h3>
+    <div><pre>{{ user_data}}</pre></div>
+    {% endif %}
+
+    {% if verified %}
+    <h3>Logged in from quizzerz</h3>
+    <div><pre>{{ verified }}</pre></div>
+    {% endif %}
     {% endif %}
 </body>
 </html>

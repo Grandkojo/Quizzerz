@@ -48,3 +48,62 @@ body{
 .btn:hover i, .btn:hover span{
     transform: scale(1.2);
 }
+
+.form-container{
+    position: absolute;
+    height: 70%;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container form{
+    width: 100%;
+    text-align: center;
+}
+
+.form-container img {
+    display: block;
+    margin: 0 auto 20px;
+    outline: none;
+}
+
+.form-container button,
+.form-container input[type="email"],
+.form-container input[type="password"],
+.form-container input[type="text"] {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    outline-color: #63a5eb;
+    
+}
+
+.form-container a:focus {
+    outline: none;
+}
+
+.form-container .btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;
+    outline: none;
+}
+.form-container .btn-google img {
+    padding: 0;
+    margin: 0;
+    
+}
+
+.form-container .btn-google p {
+    /* text-align: center; */
+    margin-top: 5px;
+    padding-top: 10px;
+    margin-left: 10%;
+}

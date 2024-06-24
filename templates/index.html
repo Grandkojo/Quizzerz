@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="images/Quizzers icon.png">
+    <link rel="icon" href="{{ url_for('static', filename='images/Quizzerz icon.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
@@ -43,7 +43,7 @@
 <body>
     <header class="header-container">
         <div class="col col-3 quizzerz">
-            <img class="quizzerz-logo" src="{{ url_for('static', filename='images/Quizzers logo.png') }}" alt="quizzerz-logo" style="height: 70px; width: auto;">
+            <img class="quizzerz-logo" src="{{ url_for('static', filename='images/Quizzerz logo.png') }}" alt="quizzerz-logo" style="height: 70px; width: auto;">
         </div>
         <div class="col col-9 d-flex justify-content-end">
             <nav style="font-size: x-large;">
@@ -56,8 +56,10 @@
     <div class="d-flex flex-column align-items-center mt-5">
         <h3 style="font-family: cursive; font-size: 150px; color: chocolate;">Quizzerz</h3>
         <h6 style="font-family: monospace; font-size: 30px; color: chocolate;">you really that good?</h6>
-        <button class="btn border"><span class="p-3">Let's get started</span><i class="fa fa-chevron-right" aria-hidden="true"></i>
-        </button>
+        <a href="{{ url_for('signup')}}">
+            <button class="btn border"><span class="p-3">Let's get started</span><i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </button>
+        </a>
     </div>
     <img src="{{ url_for('static', filename='images/calculating.png') }}" style="height: 200px; width: auto; position: absolute; bottom: 60px; left: 5px; opacity: 0.4;" alt="math">
     <img src="{{ url_for('static', filename='images/biology.png')}}" style="height: 200px; width: auto; position: fixed; bottom: 60px; right: 5px; opacity: 0.4;" alt="biology">

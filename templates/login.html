@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/Quizzerz icon.png') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Quizzerz - Login</title>
+</head>
+<body style="display: flex; justify-content: center;
+align-items: center; margin: 0;">
+    <div class="form-container">
+        <form action="{{ url_for('quizzerz_login') }}" autocomplete="off" method="post">
+            <img src="{{url_for('static', filename='images/Quizzerz logo.png')}}" alt="quizzerz-logo" style="height: 70px; width: auto;">
+            <h5 style="margin: 10px;">Log in to continue</h5>
+    
+            <input type="email" name="user_email" id="user_email" placeholder="enter your email or username" required>
+            <br>
+            <input type="password" name="user_password" id="user_password" placeholder="enter your password" required>
+            <br>
+            <button type="submit" class="signup_button" style="background-color: rgba(103, 44, 61, 0.581); color:black; font-weight: bold; border-radius: 5px;"> Log in </button>
+            <br>
+            <h5 style="margin: 35px;">or continue with</h5>
+    
+            <a href="{{url_for('google_login')}}" style="text-decoration: none;">
+                <button type="button" class="btn-light btn-google">
+                    <img src="{{ url_for('static', filename='images/google_icon.png')}}" alt="google_icon" style="height: 25px; width: auto;"><p>Google</p> 
+                </button>
+            </a>
+
+            <a href="{{url_for('signup')}}">
+                <h5 style="position: relative; top: 10%;">Don't have an account? Create an account</h5>
+            </a>
+        </form>
+    </div>
+
+    <!-- {% if session %}
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+    <div><pre>{{ pretty }}</pre></div>
+    {% else %}
+    <p><a href="{{ url_for('google_login') }}">Login with Google</a></p>
+    {% endif %} -->
+</body>
+</html>
