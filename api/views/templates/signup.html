@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/Quizzerz icon.png') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Quizzerz - Signup</title>
+</head>
+<body style="display: flex; justify-content: center;
+align-items: center; margin: 0;">
+    <div class="form-container">
+        <form action="{{ url_for('user_bp.signup') }}" autocomplete="off" method="post">
+            <img src="{{url_for('static', filename='images/Quizzerz logo.png')}}" alt="quizzerz-logo" style="height: 70px; width: auto;">
+            <h5 style="margin: 10px;">Sign up to continue</h5>
+    
+            <input type="email" name="user_email" id="user_email" placeholder="enter your email" required>
+            <br>
+            <input type="password" name="user_password" id="user_password" placeholder="enter your password" required>
+            <br>
+            <input type="text" name="user_name" id="user_name" placeholder="enter your preferred username" required>
+            <br>
+            <button type="submit" class="signup_button" style="background-color: rgba(103, 44, 61, 0.581); color:black; font-weight: bold; border-radius: 5px;"> Sign up </button>
+            <br>
+            <h5 style="margin: 20px;">or continue with</h5>
+    
+            <a href="{{url_for('user_bp.google_login')}}">
+                <button type="button" class="btn-light btn-google">
+                    <img src="{{ url_for('static', filename='images/google_icon.png')}}" alt="google_icon" style="height: 20px; width: auto;"><p>Google</p> 
+                </button>
+            </a>
+
+            <a href="{{url_for('user_bp.login')}}">
+                <h5 style="position: relative; top: 10%;">Already have an account? Log in</h5>
+            </a>
+        </form>
+    </div>
+</body>
+</html>

@@ -3,6 +3,7 @@ authlib
 requests
 python-dotenv
 pytest
+flask-restful
 # Flask-Login
 # Flask-OAuthlib
 # Flask-Bcrypt
