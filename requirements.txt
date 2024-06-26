@@ -4,6 +4,10 @@ requests
 python-dotenv
 pytest
 flask-restful
+flask_sqlalchemy
+# psycopg2
+sqlalchemy
+psycopg2-binary
 # Flask-Login
 # Flask-OAuthlib
 # Flask-Bcrypt
