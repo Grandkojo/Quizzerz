@@ -1,0 +1,81 @@
+questionid,cat_alias,question_text
+1,sci,What is the chemical symbol for water?
+2,sci,What planet is known as the Red Planet?
+3,sci,What gas do plants absorb from the atmosphere?
+4,sci,What is the process by which plants make their food?
+5,sci,What is the boiling point of water at sea level?
+6,sci,The most abundant gas in the Earth's atmosphere is?
+7,sci,What part of the cell contains the genetic material?
+8,sci,What is the main function of the white blood cells?
+9,sci,What is the smallest unit of life?
+10,sci,The powerhouse of the cell is?
+11,sci,Who proposed the theory of relativity?
+12,sci,What is the chemical formula for table salt?
+13,sci,What is the human body's largest organ?
+14,sci,What vitamin is produced when a person is exposed to sunlight?
+15,sci,What force keeps us grounded on Earth?
+16,sci,What is the atomic number of carbon?
+17,sci,What is the speed of light in a vacuum?
+18,sci,What is the main component of the Sun?
+19,sci,What is the name of the first artificial Earth satellite?
+20,sci,What is the study of fungi called?
+21,mat,What is the value of pi to two decimal places?
+21,mat,What is the derivative of 2x^2?
+23,mat,What triangle has angles of 60° each?
+24,mat,What is the sum of the interior angles of a hexagon?
+25,mat,What is the probability of rolling a sum of 7 on two six-sided dice?
+26,mat,What is the slope of the line y = 2x + 3?
+27,mat,What is the integral of 2x?
+28,mat,What is the value of the limit as x approaches infinity of (1 + 1/x)^x?
+29,mat,What is the solution to the quadratic equation x^2 - 4x + 4 = 0?
+30,mat,What is the sum of the first 100 natural numbers?
+31,mat,What is the year 1982 in Roman Numerals? 
+32,mat,What is next in the following number series: 256 289 324 361 . . . ?
+33,mat,What is the name of a triangle that has two sides of the same length?
+34,mat,What is a flat image that can be easily displayed in 3D called?
+35,mat,A car is traveling at the rate of 75 kilometers per hour. How many meters is the car traveling in one minute? 
+36,mat,Which number is best represented in binary as 100? 
+37,mat,How many hours are there in a year (rounded to the nearest hour)?
+38,mat,Solve the following equation: -15 + (-5x)=0
+39,mat,What is the highest common factor of the numbers 30 and 132?
+40,mat,What is the vertex of a figure?
+41,geo,What is the capital of France?
+42,geo,Which continent is known as the "Dark Continent"?
+43,geo,What is the largest ocean on Earth?
+44,geo,Which country has the largest population?
+45,geo,What river runs through Egypt?
+46,geo,What is the smallest country in the world by land area?
+47,geo,What is the capital of Australia?
+48,geo,What is the longest river in the world?
+49,geo,Which country is also known as the Netherlands?
+50,geo,What mountain range separates Europe and Asia?
+51,geo,What is the currency of Japan?
+52,geo,Which country is known as the Land of the Rising Sun?
+53,geo,What desert is the largest in the world?
+54,geo,What is the deepest part of the world's oceans?
+55,geo,What is the highest mountain in Africa?
+56,geo,What is the name of the strait that separates Spain from Africa?
+57,geo,What is the capital of Iceland?
+58,geo,Which is the only sea without any coasts?
+59,geo,What is the name of the largest active volcano in the world?
+60,geo,Which country has the longest coastline in the world?
+61,eng,What is the opposite of 'hot'?
+62,eng,What is the past tense of 'run'?
+63,eng,What is the synonym of 'happy'?
+64,eng,What is the plural of 'child'?
+65,eng,What punctuation mark is used to indicate a question?
+66,eng,What is the term for a word that has the same meaning as another word?
+67,eng,What is the main verb in the sentence: "She is reading a book"?
+68,eng,What is the adjective in the sentence: "The quick brown fox jumps over the lazy dog"?
+69,eng,What is the term for a word that sounds the same as another but has a different meaning?
+70,eng,What is the correct form of the verb in the sentence: "He (to be) happy"?
+71,eng,What is the comparative form of 'good'?
+72,eng,What is the term for a group of lines in a poem?
+73,eng,What is the pronoun in the sentence: "They went to the park"?
+74,eng,What is the main clause in the sentence: "Because it was raining; we stayed indoors"?
+75,eng,What is the past participle of 'write'?
+76,eng,What is the term for a word formed by rearranging the letters of another word?
+77,eng,What is the figure of speech in the sentence: "The leaves danced in the wind"?
+78,eng,What is the term for a noun that cannot be counted?
+79,eng,What is the term for a verb that does not require a direct object?
+80,eng,What is the term for a verb form that functions as an adjective?

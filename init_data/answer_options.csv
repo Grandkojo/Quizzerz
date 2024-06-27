@@ -1,0 +1,241 @@
+questionid,answer_text,is_correct
+1,H20,True
+1,O2,False
+1,CO2,False
+2,Mars,True
+2,Venus,False
+2,Jupiter,False
+3,Carbon dioxide,True
+3,Oxygen,False
+3,Nitrogen,False
+4,Photosyntesis,True
+4,Respiration,False
+4,Transpiration,False
+5,100 degrees,True
+5,50 degrees,False
+5,150 degrees,False
+6,Nitrogen,True
+6,Oxygen,False
+6,Carbon dioxide,False
+7,Nucleus,True
+7,Mitochondria,False
+7,Ribosome,False
+8,Fight infections,True
+8,Carry oxygen,False
+8,Clot blood,False
+9,Cell,True
+9,Atom,False
+9,Molecule,False
+10,Mitochondria,True
+10,Nucleus,False
+10,Chloroplast,False
+11,Albert Einstein,True
+11,Isaac Newton,False
+11,Galileo Galilei,False
+12,Nacl,True
+12,HCl,False
+12,KCl,False
+13,skin,True
+13,Liver,False
+13,Heart,False
+14,vitamin D,True
+14,vitamin C,False
+14,vitamin B12,False
+15,Gravity,True
+15,Magnetism,False
+15,Friction,False
+16,6,True
+16,8,False
+16,12,False
+17,299792 km/s,True
+17,150000 km/s,False
+17,500000 km/s,False
+18,Hydrogen,True
+18,Helium,False
+18,Oxygen,False
+19,Sputnik 1,True
+19,Apollo 11,False
+19,Voyager 1,False
+20,Mycology,True
+20,Bacteriology,False
+20,Virology,False
+21,3.14,True
+21,3.15,False
+21,3.13,False
+22,4x,True
+22,5x^2,False
+22,4x + 2,False
+23,Equilateral,True
+23,Isoceles,False
+23,Scalene,False
+24,720 degrees,True
+24,540 degrees,False
+24,600 degrees,False
+25,1/6,True
+25,1/12,False
+25,1/8,False
+26,2,True
+26,3,False
+26,1,False
+27,x^2 + C,True
+27,2x^2 + C,False
+27,x^2/2 + C,False
+28,e,True
+28,1,False
+28,0,False
+29,2,True
+29,-2,False
+29,4,False
+30,5050,True
+30,5000,False
+30,5055,False
+31,MCMLXXXII,True
+31,MCMLXXIII,False
+31,MCMLXVIV,False
+32,400,True
+32,370,False
+32,410,False
+33,Isosceles,True
+33,Equilateral,False
+33,Scalene,False
+34,A hologram,True
+34,A laser,False
+34,A television,False
+35,1250 meters per minute,True
+35,1150 meters per minute,False
+35,1200 meters per minute,False
+36,4,True
+36,5,False
+36,10,False
+37,8760 hours,True
+37,8500 hours,False
+37,8790 hours,False
+38,-3,True
+38,9,False
+38,-6,False
+39,6,True
+39,3,False
+39,2,False
+40,The point on a figure where two or more lines meet,True
+40,The flat surface on a figure,False
+40,A line connecting two or more points on a figure,False
+41,Paris,True
+41,London,False
+41,Rome,False
+42,Africa,True
+42,Asia,False
+42,Europe,False
+43,Pacific Ocean,True
+43,Indian Ocean,False
+43,Indian Ocean,False
+44,China,True
+44,India,False
+44,USA,False
+45,Nile,True
+45,Amazon,False
+45,Mississippi,False
+46,Vatican City,True
+46,Monaco,False
+46,San Marino,False
+47,Canberra,True
+47,Sydney,False
+47,Melbourne,False
+48,Nile,True
+48,Amazon,False
+48,Yangtze,False
+49,Holland,True
+49,Belgium,False
+49,Denmark,False
+50,Ural Mountains,True
+50,Alps,False
+50,Andes,False
+51,Yen,True
+51,Won,False
+51,Yuan,False
+52,Japan,True
+52,China,False
+52,South Korea,False
+53,Sahara,True
+53,Gobi,False
+53,Kalahari,False
+54,Mariana Trench,True
+54,Tonga Trench,False
+54,Philippine Trench,False
+55,Mount Kilimanjaro,True
+55,Mount Kenya,False
+55,Mount Elgon,False
+56,Strait of Gibraltar,True
+56,Bosphorus,False
+56,Bering Strait,False
+57,Reykjavik,True
+57,Oslo,False
+57,Copenhagen,False
+58,Sargasso Sea,True
+58,Mediterranean Sea,False
+58,Caribbean Sea,False
+59,Mauna Loa,True
+59,Mount Vesuvius,False
+59,Mount St.Helens,False
+60,Canada,True
+60,Russia,False
+60,Australia,False
+61,Cold,True
+61,Warn,False
+61,Cool,False
+62,Ran,True
+62,Running,False
+62,Runned,False
+63,Joyful,True
+63,Sad,False
+63,Angry,False
+64,Children,True
+64,Childs,False
+64,Children,False
+65,Question mark,True
+65,Exclamation mark,False
+65,Period,False
+66,Synonym,True
+66,Antonym,False
+66,Homonym,False
+67,Reading,True
+67,She,False
+67,Book,False
+68,Quick,True
+68,Fox,False
+68,Jumps,False
+69,Homophone,True
+69,synonym,False
+69,Antonym,False
+70,Is,True
+70,Are,False
+70,Am,False
+71,Better,True
+71,Gooder,False
+71,Best,False
+72,Stanza,True
+72,Verse,False
+72,Prose,False
+73,They,True
+73,Went,False
+73,Park,False
+74,We stayed indoors,True
+74,Because it was raining,False
+74,Indoors,False
+75,Written,True
+75,Wrote,False
+75,Writing,False
+76,Anagram,True
+76,Palindrome,False
+76,Acronym,False
+77,Personification,True
+77,Metaphor,False
+77,Simile,False
+78,Uncountable noun,True
+78,Countable noun,False
+78,Proper noun,False
+79,Intransitive verb,True
+79,Transitive verb,False
+79,Auxiliary verb,False
+80,Participle,True
+80,Gerund,False
+80,Infinitive,False

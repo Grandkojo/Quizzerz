@@ -22,3 +22,5 @@ __pycache__/
 
 #environment variables
 .env
+
+populate_db.py
