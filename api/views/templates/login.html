@@ -12,10 +12,13 @@
 </head>
 <body style="display: flex; justify-content: center;
 align-items: center; margin: 0;">
-    <div class="form-container">
-        <form action="{{ url_for('user_bp.quizzerz_login') }}" autocomplete="off" method="post">
-            <img src="{{url_for('static', filename='images/Quizzerz logo.png')}}" alt="quizzerz-logo" style="height: 70px; width: auto;">
-            <h5 style="margin: 10px;">Log in to continue</h5>
+<div class="form-container">
+    <form action="{{ url_for('user_bp.quizzerz_login') }}" autocomplete="off" method="post">
+        <img src="{{url_for('static', filename='images/Quizzerz logo.png')}}" alt="quizzerz-logo" style="height: 70px; width: auto;">
+        <h5 style="margin: 10px;">Log in to continue</h5>
+        {% if error%}
+        <p class="alert alert-danger"><strong>{{error}}</strong></p>
+        {% endif%}
     
             <input type="email" name="user_email" id="user_email" placeholder="enter your email or username" required>
             <br>

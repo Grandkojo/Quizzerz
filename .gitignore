@@ -22,5 +22,5 @@ __pycache__/
 
 #environment variables
 .env
-
+misc.txt
 populate_db.py
