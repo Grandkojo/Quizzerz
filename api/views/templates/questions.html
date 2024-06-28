@@ -9,6 +9,104 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <title>Quizzerz</title>
+
+    <style>
+        body {
+            display: flex;
+            /* justify-content: center; */
+            align-items: center; 
+            margin: 0;
+            position: relative;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+        .question {
+            display: none;
+            text-align: center;
+        }
+
+        ul {
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .question.active {
+            display: block;
+        }
+        p {
+            background-color: antiquewhite;
+            height: 50px;
+            width: 200px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            border-radius: 10px;
+            margin-right: 40px;
+        }
+
+        p:hover {
+            transform: scale(1.05);
+        }
+
+        #quiz-container {
+            /* position: relative; */
+            /* display: flex; */
+            /* justify-content: center; */
+            /* align-items: center; */
+            height: 65%;
+            width: 500px;
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: block;
+            padding-top: 50px;
+            /* text-align: center; */
+        }
+
+        #next-button {
+           width: 70px;
+           height: 40px;
+           border-radius: 5px;
+           position: relative;
+           top: 7%;
+           left: 83%;
+           text-align: center;
+           color:aliceblue;
+           font-size: large;
+           /* display: flex; */
+           /* justify-content: start; */
+        }
+
+
+        .progress-bar-container {
+            width: 65%; 
+            max-width: 450px; 
+            margin: 20px auto;
+            background-color: #e0e0e0;
+            border-radius: 25px;
+            height: 20px;
+        }
+        .progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #76c7c0;
+            border-radius: 25px;
+        }
+        @media (max-width: 768px) {
+            .progress-bar-container {
+                width: 65%; 
+            }
+        }
+        @media (max-width: 480px) {
+            .progress-bar-container {
+                width: 65%; 
+            }
+        }
+    </style>
 </head>
 <body>
     {% if questions and sect %}
@@ -26,9 +124,69 @@
     <!-- <p>{{ question }}</p> -->
     {% endfor %}
     {% endif %}
-    <div class="progress">
-        <div class="progress-bar" style="width:70%"></div>
-      </div>
-      <h2>How good is your {{sect}} ?</h2>
+    <h2 class="d-flex justify-content-center align-items-center" style="padding-top: 30px;">How good is your {{sect}}?</h2>
+    <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+      
+      <div id="quiz-container">
+        {% for question in questions %}
+        <div class="question" id="question-{{ loop.index0 }}">
+            <h3>Question {{ loop.index }}: {{ question.question_text }}</h3>
+            <ul>
+                {% for option in question.options %}
+                <p class="pt-3" style="cursor: pointer;">
+                    {{ option.answer_text }}
+                </p>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+        <button class="bg-primary" id="next-button">Next</button>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const questions = document.querySelectorAll(".question");
+            let currentQuestionIndex = 0;
+            const progressBar = document.getElementById("progress-bar");
+            const nextButton = document.getElementById("next-button");
+
+            function showQuestion(index) {
+                questions.forEach((question, i) => {
+                    question.classList.remove("active");
+                    if (i === index) {
+                        question.classList.add("active");
+                    }
+                });
+            }
+
+            nextButton.addEventListener("click", function() {
+                currentQuestionIndex++;
+                updateProgressBar();
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion(currentQuestionIndex);
+                    if (currentQuestionIndex === questions.length -1) {
+                        nextButton.innerText = "Finish";
+                    }
+                } else {
+                    if (currentQuestionIndex === questions.length){
+                        nextButton.setAttribute("disabled", "true");
+                        alert("You've reached the end of the quiz!");
+                    }
+                    // Optionally, handle the end of the quiz here
+                }
+            });
+
+            function updateProgressBar() {
+                const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+                progressBar.style.width = progress + "%";
+            }
+
+            showQuestion(currentQuestionIndex);
+            updateProgressBar();
+        });
+    </script>
 </body>
 </html>
