@@ -101,6 +101,47 @@ def authorize():
 
     return redirect(url_for("user_bp.home", method="google"))
 
+@user_blueprint.route("/quiz/<string:sect>")
+def quiz(sect):
+    from api.views.db import QuestionDetails, AnswerOptions
+    sections = ['mat', 'sci', 'geo', 'eng']
+
+    if session.get("user"):
+        if sect in sections:
+            questions = QuestionDetails.query.filter_by(cat_alias=sect).all()
+            question_ids = [q.questionid for q in questions]
+            options = AnswerOptions.query.filter(AnswerOptions.questionid.in_(question_ids)).all()
+            # is_correct = [c.is_correct for c in options]
+
+            combined = []
+            for question in questions:
+                question_options = []
+                for opt in options:
+                    if opt.questionid == question.questionid:
+                        option_data = {
+                            "answer_text": opt.answer_text,
+                            "is_correct": opt.is_correct
+                        }
+                        question_options.append(option_data)
+                
+                combined.append({
+                    "question_text": question.question_text,
+                    "options": question_options
+                })
+            
+
+            return render_template("questions.html", questions=combined, sect=sect)
+        
+            # questions_list = [q.to_dict for q in questions]
+            # return jsonify(questions_list)
+            return jsonify(combined)
+
+        return jsonify({"error": "Invalid section"}), 400
+    error="Login to access questions"
+    return render_template("login.html",error=error)
+
+
+
 @user_blueprint.route("/logout")
 def logout():
     session.pop("user", None)

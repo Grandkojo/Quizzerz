@@ -41,6 +41,13 @@ class QuestionDetails(db.Model):
     question = relationship("Questions", back_populates="question_details")
     category = relationship("Categories", back_populates="question_details")
 
+    def to_dict(self):
+        return {
+            "id": self.questionid,
+            "question_text": self.question_text,
+            "cat_alias": self.cat_alias
+        }
+
 class QuizResults(db.Model):
     """ The quiz_results table """
     __tablename__ = 'quiz_results'
