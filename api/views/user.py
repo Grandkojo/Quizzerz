@@ -140,7 +140,9 @@ def quiz(sect):
     error="Login to access questions"
     return render_template("login.html",error=error)
 
-
+# @user_blueprint.route("/answer")
+# def check_answer():
+#     pass
 
 @user_blueprint.route("/logout")
 def logout():

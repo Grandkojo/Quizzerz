@@ -40,7 +40,7 @@
         p {
             background-color: antiquewhite;
             height: 50px;
-            width: 200px;
+            width: 250px;
             margin-bottom: 10px;
             transition: transform 0.3s ease, background-color 0.3s ease;
             border-radius: 10px;
@@ -132,10 +132,10 @@
       <div id="quiz-container">
         {% for question in questions %}
         <div class="question" id="question-{{ loop.index0 }}">
-            <h3>Question {{ loop.index }}: {{ question.question_text }}</h3>
+            <h3>{{ loop.index }}: {{ question.question_text }}</h3>
             <ul>
                 {% for option in question.options %}
-                <p class="pt-3" style="cursor: pointer;">
+                <p class="pt-3" style="cursor: pointer; color: blue; user-select: none;" id="answer_option" onclick="selected(this)" >
                     {{ option.answer_text }}
                 </p>
                 {% endfor %}
@@ -152,7 +152,8 @@
             let currentQuestionIndex = 0;
             const progressBar = document.getElementById("progress-bar");
             const nextButton = document.getElementById("next-button");
-
+            let selectedAnswers = [];
+    
             function showQuestion(index) {
                 questions.forEach((question, i) => {
                     question.classList.remove("active");
@@ -161,32 +162,56 @@
                     }
                 });
             }
-
+    
             nextButton.addEventListener("click", function() {
                 currentQuestionIndex++;
                 updateProgressBar();
+                
                 if (currentQuestionIndex < questions.length) {
                     showQuestion(currentQuestionIndex);
-                    if (currentQuestionIndex === questions.length -1) {
+                    if (currentQuestionIndex === questions.length - 1) {
                         nextButton.innerText = "Finish";
                     }
                 } else {
-                    if (currentQuestionIndex === questions.length){
+                    if (currentQuestionIndex === questions.length) {
                         nextButton.setAttribute("disabled", "true");
                         alert("You've reached the end of the quiz!");
+                        
+                        console.log(selectedAnswers);
                     }
                     // Optionally, handle the end of the quiz here
                 }
             });
-
+    
             function updateProgressBar() {
                 const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
                 progressBar.style.width = progress + "%";
             }
-
+    
             showQuestion(currentQuestionIndex);
             updateProgressBar();
         });
+    
+        let selectedOptions = [];
+    
+        function selected(element) {
+            const questionIndex = Array.from(document.querySelectorAll(".question")).indexOf(element.closest(".question"));
+    
+            if (!selectedOptions[questionIndex]) {
+                selectedOptions[questionIndex] = null;
+            }
+    
+            if (selectedOptions[questionIndex] !== null) {
+                selectedOptions[questionIndex].style.backgroundColor = "antiquewhite";
+            }
+            
+            element.style.backgroundColor = "green";
+            
+            selectedOptions[questionIndex] = element;
+            alert(selectedAnswers[questionIndex]);
+            selectedAnswers[questionIndex] = element.innerText;
+        }
     </script>
+    
 </body>
 </html>
