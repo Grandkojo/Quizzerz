@@ -111,20 +111,20 @@
 <body>
     {% if questions and sect %}
     {% if sect == "geo" %}
-        {% set sect = "Geography" %}
+        {% set sectid = "Geography" %}
     {% elif sect == "mat" %}
-        {% set sect = "Mathematics" %}
+        {% set sectid = "Mathematics" %}
     {% elif sect == "sci" %}
-        {% set sect = "Science" %}
+        {% set sectid = "Science" %}
     {% elif sect == "eng" %}
-        {% set sect = "English" %}
+        {% set sectid = "English" %}
     {% endif %}
     {% for question in questions%}
 
     <!-- <p>{{ question }}</p> -->
     {% endfor %}
     {% endif %}
-    <h2 class="d-flex justify-content-center align-items-center" style="padding-top: 30px;">How good is your {{sect}}?</h2>
+    <h2 class="d-flex justify-content-center align-items-center" style="padding-top: 30px;">How good is your {{sectid}}?</h2>
     <div class="progress-bar-container">
         <div id="progress-bar" class="progress-bar"></div>
     </div>
@@ -145,6 +145,7 @@
         <button class="bg-primary" id="next-button">Next</button>
     </div>
 
+    
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -152,7 +153,8 @@
             let currentQuestionIndex = 0;
             const progressBar = document.getElementById("progress-bar");
             const nextButton = document.getElementById("next-button");
-            let selectedAnswers = [];
+            const section = "{{ sect }}";
+            // let selectedAnswers = [];
     
             function showQuestion(index) {
                 questions.forEach((question, i) => {
@@ -170,15 +172,16 @@
                 if (currentQuestionIndex < questions.length) {
                     showQuestion(currentQuestionIndex);
                     if (currentQuestionIndex === questions.length - 1) {
+                        
                         nextButton.innerText = "Finish";
                     }
                 } else {
                     if (currentQuestionIndex === questions.length) {
                         nextButton.setAttribute("disabled", "true");
-                        alert("You've reached the end of the quiz!");
-                        
-                        console.log(selectedAnswers);
+                        // alert("You've reached the end of the quiz!");
+                        sendAnswersToServer(section, answers);
                     }
+                    console.log(answers);
                     // Optionally, handle the end of the quiz here
                 }
             });
@@ -193,7 +196,8 @@
         });
     
         let selectedOptions = [];
-    
+        let answers = []
+
         function selected(element) {
             const questionIndex = Array.from(document.querySelectorAll(".question")).indexOf(element.closest(".question"));
     
@@ -208,8 +212,38 @@
             element.style.backgroundColor = "green";
             
             selectedOptions[questionIndex] = element;
-            alert(selectedAnswers[questionIndex]);
-            selectedAnswers[questionIndex] = element.innerText;
+
+            // if (element[questionIndex].innerText !== null){
+                answers[questionIndex] = (selectedOptions[questionIndex].innerText);
+            // }
+            
+            // alert(answers);
+        }
+
+        function sendAnswersToServer(section, answers) {
+            fetch('/calculate_score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sect: section, selected_answers: answers })
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    console.log('Response data:', data);
+                    // Optional: Handle any pre-redirect logic here
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     </script>
     

@@ -13,11 +13,13 @@ def index():
 def home():
     method = request.args.get('method')
     user_data = session.get('user')
+    # return jsonify({"user_data": user_data})
     if user_data:
         if method == "google" or method == "quizzerz":
             return render_template('home.html', user_data=user_data, method=method)
     else:
         return redirect(url_for("user_bp.index"))
+    return render_template('home.html', user_data=user_data, method=method)
 
 @user_blueprint.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -132,17 +134,57 @@ def quiz(sect):
 
             return render_template("questions.html", questions=combined, sect=sect)
         
-            # questions_list = [q.to_dict for q in questions]
-            # return jsonify(questions_list)
-            return jsonify(combined)
 
         return jsonify({"error": "Invalid section"}), 400
     error="Login to access questions"
     return render_template("login.html",error=error)
 
-# @user_blueprint.route("/answer")
-# def check_answer():
-#     pass
+@user_blueprint.route('/calculate_score', methods=['POST'])
+def calculate_score():
+    from api.views.db import QuestionDetails, AnswerOptions
+    data = request.get_json()
+    selected_answers = data['selected_answers']
+    selected_answers = [ans for ans in selected_answers if ans is not None]
+
+    sect = data['sect']
+
+    questions = QuestionDetails.query.filter_by(cat_alias=sect).all()
+    question_ids = [q.questionid for q in questions]
+    answer_solution = AnswerOptions.query.with_entities(AnswerOptions.answerid, AnswerOptions.is_correct).filter(AnswerOptions.answer_text.in_(selected_answers)).all()
+    # answer_id = AnswerOptions.query.with_entities(AnswerOptions.answerid, AnswerOptions.answer_text, AnswerOptions.is_correct).filter(AnswerOptions.questionid.in_(question_ids)).all()
+    # options = AnswerOptions.query.filter(AnswerOptions.questionid.in_(question_ids)).all()
+    # correct_answers = AnswerOptions.query.with_entities(AnswerOptions.answer_text, AnswerOptions.is_correct).filter(AnswerOptions.answer_text.in_(selected_answers)).all()
+
+
+    print(selected_answers)
+    print(answer_solution)
+    print(question_ids)
+    for answerid, is_correct in answer_solution:
+        print(f"Answer: {answerid}, Is Correct: {is_correct}")
+   
+    score = sum(1 for _, answer in answer_solution if answer == True)
+    total_questions = len(question_ids)
+
+
+    print(f"{score} out of {total_questions}")
+
+    selected_answers_with_correctness = [
+    {"answer_text": answer, "is_correct": is_correct} 
+    for answer, (answerid, is_correct) in zip(selected_answers, answer_solution)
+    ]
+    session['quiz_details'] = {
+        "selected_answers": selected_answers_with_correctness,
+        "score": score,
+        "length": total_questions
+    }
+    return redirect(url_for('user_bp.results',score=score))
+
+@user_blueprint.route('/results', methods=["GET"])
+def results():
+    score = request.args.get('score', 0)
+    quiz_details = session.get('quiz_details', {})
+    return render_template('results.html', score=score, quiz_details=quiz_details)
+
 
 @user_blueprint.route("/logout")
 def logout():

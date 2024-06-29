@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/Quizzerz icon.png') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Quiz Results</title>
+
+    <style>
+        body {
+            display: flex;
+            /* justify-content: center; */
+            align-items: center; 
+            margin: 0;
+            position: relative;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+
+        .remarks-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            margin-top: 200px;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            height: 300px;
+            width: 500px;
+            background-color: antiquewhite;
+        }
+
+        .button {
+            background-color:bisque;
+            border-radius: 5px;
+            margin-top: 30px;
+            height: 30px;
+            width: auto;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background-color:burlywood;
+            /* color: white; */
+        }
+    </style>
+</head>
+<body>
+    {%set percent = quiz_details["score"] / quiz_details["length"] * 100 %}
+    <div class="remarks-container">
+
+        <h1>Thanks for taking our Quiz!!</h1>
+    
+        <h4>Final Score Percentage: {{ percent }}%</h4>
+    
+        {% set remarks = None %}
+        {% if percent %}
+            {% if percent < 25 %}
+                {% set remarks = "You didn't do well, there's more room for improvement 😊" %}
+            {% elif percent >= 25 and percent < 50 %}
+                {% set remarks = "Good work, but you can do better 😉" %}
+            {% elif percent >= 50 and percent < 75 %}
+                {% set remarks = "That was awesome, a bit higher next time? 🤔" %}
+            {% elif percent >= 75 and percent <= 100 %}
+                {% set remarks = "Excellent work, keep it up! 🥳" %}
+            {% elif percent > 100 %}
+                {% set remarks = "Wow! Over 100%? Double-check your score calculation! 🤔" %}
+            {% else %}
+                {% set remarks = "You sure you took the test? 🤷" %}
+            {% endif %}
+        {% endif %}
+    
+        <p style="font-weight: bold;">{{ remarks }}</p>
+        <a href="{{url_for('user_bp.home')}}" style="text-decoration: none;">
+            <button class="button">Retry ?</button>
+        </a>
+    </div>
+    <!-- <pre>{{ quiz_details }}</pre> -->
+     
+</body>
+</html>
