@@ -46,4 +46,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     port = os.getenv('FLASK_PORT', 5000)
-    app.run(port=int(port))
+    app.run(port=int(port), host='0.0.0.0')
