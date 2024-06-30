@@ -8,6 +8,7 @@ flask_sqlalchemy
 # psycopg2
 sqlalchemy
 psycopg2-binary
+flask_session
 # Flask-Login
 # Flask-OAuthlib
 # Flask-Bcrypt

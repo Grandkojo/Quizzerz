@@ -1,9 +1,11 @@
-from flask import Flask
+from flask import Flask, session
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 import os
 from flask_sqlalchemy import SQLAlchemy
 import uuid
+from datetime import timedelta
+# from flask_session import Session
 
 load_dotenv()
 
@@ -17,7 +19,13 @@ app.config['OAUTH2_CLIENT_SECRET'] = os.getenv('OAUTH2_CLIENT_SECRET')
 sql_file = os.getenv('SQL_FILE')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.permanent_session_lifetime = timedelta(days=1)
 app.debug = True
+
+# app.config['SESSION_TYPE'] = 'filesystem'  # Optional: Use filesystem to store sessions
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1) 
+
+# Session(app)
 
 # Initialize OAuth
 oauth = OAuth(app)
