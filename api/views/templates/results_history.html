@@ -119,7 +119,6 @@
                         <div id="details-{{ loop.index }}" style="display: none;">
                             {% set quiz_results = quiz.details[-1] %}
                             {% if quiz_results.selected_answers %}
-                                <!-- <h4>Quiz Results:</h4> -->
                                 <ul>
                                     {% for answer in quiz_results.selected_answers %}
                                         {% set index = loop.index0 %}
