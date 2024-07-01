@@ -1,4 +1,5 @@
 from flask import Flask, session
+# from flask_caching import Cache
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 import os
@@ -22,9 +23,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.permanent_session_lifetime = timedelta(days=1)
 app.debug = True
 
+app.config['CACHE_TYPE'] = 'simple'
 # app.config['SESSION_TYPE'] = 'filesystem'  # Optional: Use filesystem to store sessions
 # app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1) 
 
+# cache = Cache(app)
 # Session(app)
 
 # Initialize OAuth

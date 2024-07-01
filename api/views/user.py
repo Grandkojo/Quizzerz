@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, redirect, session, url_for, rende
 import requests
 import json
 from authlib.integrations.flask_client import OAuth
-
+from datetime import datetime
 
 user_blueprint = Blueprint('user_bp', __name__, template_folder='templates')
 
@@ -52,7 +52,7 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
             session.permanent = True
-            session['user'] = {"user_id":new_user.userid, "email": email}
+            session['user'] = {"user_id":new_user.userid, "email": email, "username": username}
             print(session['user'])
             return redirect(url_for('user_bp.signup_complete'))
         
@@ -99,7 +99,7 @@ def quizzerz_login():
         user = Users.query.filter_by(email=email).first()
         if user and user.check_password(password):
             session.permanent = True
-            session['user'] = {"user_id":user.userid, "email": email}
+            session['user'] = {"user_id":user.userid, "email": email, "username": user.username}
             # return jsonify({"user": session['user']})
             flash("You were successfully logged in")
             return redirect(url_for('user_bp.home', method="quizzerz"))
@@ -157,6 +157,8 @@ def quiz(sect):
                     "options": question_options
                 })
             
+            session.permanent = True
+            session["quiz_details"] = combined
 
             return render_template("questions.html", questions=combined, sect=sect)
         
@@ -198,19 +200,80 @@ def calculate_score():
     {"answer_text": answer, "is_correct": is_correct} 
     for answer, (answerid, is_correct) in zip(selected_answers, answer_solution)
     ]
-    session['quiz_details'] = {
+
+    session.permanent = True
+
+    if session.get("user"):
+        user_id = session['user'].get('user_id')
+    else:   
+        return "No user"
+
+    if 'quiz_details' not in session:
+        # session['quiz_details'] = []
+        return "No quiz session"
+    
+    quiz_details = session['quiz_details']
+    quiz_details.append({
+        "user_id": user_id,
         "selected_answers": selected_answers_with_correctness,
         "score": score,
-        "length": total_questions
-    }
+        "length": total_questions,
+        "section": sect
+    })
+
+    session['quiz_details'] = quiz_details
+    session['results_processed'] = False
+
     return redirect(url_for('user_bp.results',score=score))
 
 @user_blueprint.route('/results', methods=["GET"])
 def results():
-    score = request.args.get('score', 0)
-    quiz_details = session.get('quiz_details', {})
-    return render_template('results.html', score=score, quiz_details=quiz_details)
+    from api.views.db import QuizResults
+    from app import db
 
+    score = request.args.get('score', 0)
+    quiz_details = session.get('quiz_details', [])
+
+    user_id = quiz_details[-1].get("user_id")
+    category = quiz_details[-1].get("section")
+    quiz_score = quiz_details[-1].get("score") 
+    # if user_id and category and quiz_score:
+
+    # existing_result = QuizResults.query.filter_by(userid=user_id, catalias=category).first()
+    # if not existing_result:
+    if not session.get('results_processed'):
+        results = QuizResults(userid=user_id, catalias=category, result=quiz_score, details=quiz_details, timestamp=datetime.now())
+        db.session.add(results)
+        db.session.commit()
+        session['results_processed'] = True
+    # else:
+        # return "Same"
+    
+    return render_template('results.html', score=score, quiz_details=quiz_details)
+    # else:
+        # return "Incorrect parameters"
+    
+    # return jsonify({"quiz_details": quiz_detailss})
+    return jsonify({"user_id": user_id, "category": category, "quiz_score": quiz_score})
+
+
+@user_blueprint.route('/results-history', methods=["GET"])
+def results_history():
+    from api.views.db import QuizResults
+
+    if session.get("user"):
+        user_id = session['user'].get('user_id')
+    else:
+        return "No user logged in", 403
+    
+    # quiz_details = session.get('quiz_details', [])
+
+    # category = request.args.get('category')
+    # if not category:
+    #     return "Category not specified."
+
+    history = QuizResults.query.filter_by(userid=user_id).order_by(QuizResults.timestamp.desc()).all()
+    return render_template("results_history.html", history=history)
 
 @user_blueprint.route("/logout")
 def logout():

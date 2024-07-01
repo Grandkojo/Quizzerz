@@ -52,10 +52,10 @@
     </style>
 </head>
 <body>
-    {%set percent = quiz_details["score"] / quiz_details["length"] * 100 %}
+    {%set percent = quiz_details[-1]["score"] / quiz_details[-1]["length"] * 100 %}
     <div class="remarks-container">
 
-        <h1>Thanks for taking our Quiz!!</h1>
+        <h2>Thanks for taking our Quiz!!</h2>
     
         <h4>Final Score Percentage: {{ percent }}%</h4>
     

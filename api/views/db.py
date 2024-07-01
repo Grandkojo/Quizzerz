@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship, backref
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 class Users(db.Model):
     """ The users table """
@@ -56,8 +58,10 @@ class QuizResults(db.Model):
     __tablename__ = 'quiz_results'
     quiz_resultid = Column(Integer, primary_key=True, autoincrement=True)
     userid = Column(Integer, ForeignKey('users.userid'))
-    categoryid = Column(Integer, ForeignKey('categories.categoryid'))
+    catalias = Column(String, ForeignKey('categories.cat_alias'))
     result = Column(Float)
+    details = Column(JSONB)
+    timestamp = db.Column(db.DateTime, default=datetime.now())
     
     user = relationship("Users", back_populates="quiz_results")
     category = relationship("Categories", back_populates="quiz_results")

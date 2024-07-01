@@ -142,7 +142,7 @@
             </ul>
         </div>
         {% endfor %}
-        <button class="bg-primary" id="next-button">Next</button>
+        <button class="bg-primary" id="next-button" style="user-select: none;">Next</button>
     </div>
 
     
@@ -177,9 +177,9 @@
                     }
                 } else {
                     if (currentQuestionIndex === questions.length) {
+                        sendAnswersToServer(section, answers);
                         nextButton.setAttribute("disabled", "true");
                         // alert("You've reached the end of the quiz!");
-                        sendAnswersToServer(section, answers);
                     }
                     console.log(answers);
                     // Optionally, handle the end of the quiz here
@@ -229,11 +229,11 @@
                 body: JSON.stringify({ sect: section, selected_answers: answers })
             })
             .then(response => {
-                if (response.redirected) {
+            //     if (response.redirected) {
                     window.location.href = response.url;
-                } else {
-                    return response.json();
-                }
+            //     } else {
+            //         return response.json();
+                // }
             })
             .then(data => {
                 if (data) {
