@@ -14,6 +14,7 @@ from api.views.user import user_blueprint
 from api.v1.users import user_app_views
 from api.v1.questions import questions_app_views
 from api.v1.results import result_app_views
+from api.views.admin import admin_blueprint
 
 
 load_dotenv()
@@ -61,6 +62,7 @@ CORS(app, resources={r"/api/v1/*": {"origins": "0.0.0.0"}})
 app.register_blueprint(user_app_views, url_prefix='/api/v1')
 app.register_blueprint(questions_app_views, url_prefix='/api/v1')
 app.register_blueprint(result_app_views, url_prefix='/api/v1')
+app.register_blueprint(admin_blueprint, url_prefix='/admin/')
 app.register_blueprint(user_blueprint)
 
 

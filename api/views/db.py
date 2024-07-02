@@ -102,6 +102,21 @@ class AnswerOptions(db.Model):
             "answer_text": self.answer_text,
             "is_correct": self.is_correct
         }
+    
+class Admin(db.Model):
+    """ The admin table """
+    __tablename__ = 'admin'
+    adminid = Column(Integer, primary_key=True, autoincrement=True)
+    admin_name = Column(String(200))
+    admin_password = Column(String(200))
+    admin_email = Column(String(200), unique=True)
+
+    def set_password(self, password):
+        self.admin_password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.admin_password, password)
+    
 
 # Define back_populates on both sides of the relationships
 Questions.question_details = relationship("QuestionDetails", back_populates="question")

@@ -127,7 +127,9 @@ def authorize():
         headers={"Authorization": f"Bearer {token['access_token']}"}).json()
     
     token['gender'] = gender
+    session.permanent = True
     session['user'] = token
+    
 
     return redirect(url_for("user_bp.home", method="google"))
 

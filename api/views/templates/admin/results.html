@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/Quizzerz icon.png') }}" />
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"> -->
+    <!-- <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <title>Quizzers - User Results </title>
+    <style>
+        #main {
+            transition: margin-left 0.5s;
+            padding: 16px;
+            margin-left: 30px;
+            /*Align with sidebar width */
+            margin-top: 20px;
+            /* Align with navbar height */
+        }
+    </style>
+</head>
+<body>
+    <div id="main" class="container">
+        {% if results %}
+        <div class="row">
+            <div class="col-5">
+                <p style="font-size: 40px">User Results</p>
+            </div>
+            <!-- <div class="col-7 d-flex justify-content-end">
+                <button >Add user</button>
+            </div> -->
+
+        </div>
+        <div class="container mt-5">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Category</th>
+                        <th>Time Taken</th>
+                        <th>Result</th>
+                        <th>Quiz Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.userid }}</td>
+                        <td>{{ result.catalias }}</td>
+                        <td>{{ result.timestamp.strftime('%-d-%b-%Y: %H:%M') }}</td>
+                        <td>{{ result.result }}</td>
+                        <td>
+                            <button>View Details</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+    
+</body>
+</html>
