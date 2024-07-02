@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request, redirect, session, url_for, render_template, flash
 import requests
 import json
-from authlib.integrations.flask_client import OAuth
+# from authlib.integrations.flask_client import OAuth
 from datetime import datetime
+# from api.views import user_blueprint
 
 user_blueprint = Blueprint('user_bp', __name__, template_folder='templates')
 
@@ -112,6 +113,7 @@ def quizzerz_login():
 def google_login():
     from app import oauth  # Import here to avoid circular import
     redirect_uri = url_for("user_bp.authorize", _external=True)
+    # return "Yes"
     return oauth.Quizzerz.authorize_redirect(redirect_uri)
 
 @user_blueprint.route("/authorize")

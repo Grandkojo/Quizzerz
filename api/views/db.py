@@ -21,6 +21,13 @@ class Users(db.Model):
     
     def get_id(self):
         return self.userid
+    
+    def to_dict(self):
+        return {
+            "user_id": self.userid,
+            "user_name": self.username,
+            "email": self.email
+        }
 
 class Questions(db.Model):
     """ The questions table """
@@ -66,6 +73,18 @@ class QuizResults(db.Model):
     user = relationship("Users", back_populates="quiz_results")
     category = relationship("Categories", back_populates="quiz_results")
 
+    def to_dict(self):
+        return {
+            "userid": self.userid,
+            "category": self.catalias,
+            "result": self.result
+        }
+    def to_dict_details(self):
+        return {
+            "userid": self.userid,
+            "quiz_details": self.details
+        }
+
 class AnswerOptions(db.Model):
     """ The answer_options table """
     __tablename__ = 'answer_options'
@@ -75,6 +94,14 @@ class AnswerOptions(db.Model):
     is_correct = Column(Boolean)
     
     question = relationship("Questions", back_populates="answer_options")
+
+    def to_dict(self):
+        return {
+            "questionid": self.questionid,
+            "answerid": self.answerid,
+            "answer_text": self.answer_text,
+            "is_correct": self.is_correct
+        }
 
 # Define back_populates on both sides of the relationships
 Questions.question_details = relationship("QuestionDetails", back_populates="question")

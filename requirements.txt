@@ -10,6 +10,8 @@ sqlalchemy
 psycopg2-binary
 flask_session
 flask-caching
+flask-cors
+flask-migrate
 # Flask-Login
 # Flask-OAuthlib
 # Flask-Bcrypt

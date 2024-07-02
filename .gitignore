@@ -24,3 +24,4 @@ __pycache__/
 .env
 misc.txt
 populate_db.py
+add_question.json
