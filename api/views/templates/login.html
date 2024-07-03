@@ -9,11 +9,16 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <title>Quizzerz - Login</title>
+    <style>
+        /* .form-container {
+            height: 70px;
+        } */
+    </style>
 </head>
 <body style="display: flex; justify-content: center;
 align-items: center; margin: 0;">
 <div class="form-container">
-    <form action="{{ url_for('user_bp.quizzerz_login') }}" autocomplete="off" method="post">
+    <form action="{{ url_for('user_bp.quizzerz_login') }}" method="post">
         <img src="{{url_for('static', filename='images/Quizzerz logo.png')}}" alt="quizzerz-logo" style="height: 70px; width: auto;">
         <h5 style="margin: 10px;">Log in to continue</h5>
         {% if error%}
@@ -23,6 +28,8 @@ align-items: center; margin: 0;">
             <input type="email" name="user_email" id="user_email" placeholder="enter your email or username" required>
             <br>
             <input type="password" name="user_password" id="user_password" placeholder="enter your password" required>
+            <br>
+            <a href="{{ url_for('user_bp.forgot_password') }}" style="text-decoration: none; display: flex; position: relative; justify-content: end; font-weight: bold;">forgot password?</a>
             <br>
             <button type="submit" class="signup_button" style="background-color: rgba(103, 44, 61, 0.581); color:black; font-weight: bold; border-radius: 5px;"> Log in </button>
             <br>

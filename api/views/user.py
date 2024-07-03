@@ -109,6 +109,40 @@ def quizzerz_login():
     
     return render_template("login.html", error=error)
 
+@user_blueprint.route('/forgot_password', methods=["POST", "GET"])
+def forgot_password():
+    from api.views.db import Users
+    error = None
+    if request.method == "POST":
+        email = request.form.get("user_email")
+        user = Users.query.filter_by(email=email).first()
+        if user.email:
+            session["user_email_for_update"] = {"email": user.email}
+            return redirect(url_for('user_bp.update_password'))
+        else:
+            error = "Email doesn't exist, please sign up"
+    return render_template('forgot_password.html', error=error)
+
+@user_blueprint.route('/update_password', methods=["POST", "GET"])
+def update_password():
+    if request.method == "POST":
+        from api.views.db import Users
+        from app import db
+        error = None
+        user_password = request.form.get("user_password")
+        confirm_user_password = request.form.get("confirm_user_password")
+
+        if user_password == confirm_user_password:
+            email = session["user_email_for_update"].get("email")
+            user = Users.query.filter_by(email=email).first()
+            user.set_password(confirm_user_password)
+            db.session.commit()
+            return redirect(url_for('user_bp.signup'))
+        error = "Passwords do not match"
+        return render_template("update_password.html", error=error)
+    return render_template("update_password.html")
+
+
 @user_blueprint.route("/google-login")
 def google_login():
     from app import oauth  # Import here to avoid circular import
