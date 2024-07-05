@@ -169,6 +169,8 @@ def authorize():
 
 @user_blueprint.route("/quiz/<string:sect>")
 def quiz(sect):
+    """ 
+    """
     from api.views.db import QuestionDetails, AnswerOptions
     sections = ['mat', 'sci', 'geo', 'eng']
 
@@ -177,7 +179,6 @@ def quiz(sect):
             questions = QuestionDetails.query.filter_by(cat_alias=sect).all()
             question_ids = [q.questionid for q in questions]
             options = AnswerOptions.query.filter(AnswerOptions.questionid.in_(question_ids)).all()
-            # is_correct = [c.is_correct for c in options]
 
             combined = []
             for question in questions:
@@ -284,10 +285,13 @@ def results():
         db.session.add(results)
         db.session.commit()
         session['results_processed'] = True
+
+    return render_template('user_results.html', score=score, quiz_details=quiz_details)
+    
+    # return "Log in"
     # else:
         # return "Same"
     
-    return render_template('results.html', score=score, quiz_details=quiz_details)
     # else:
         # return "Incorrect parameters"
     

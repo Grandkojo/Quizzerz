@@ -22,10 +22,17 @@ def get_user_by_id(user_id):
         abort(404)
     return jsonify(user.to_dict())
 
-
+""" this api creates a new user into the database
+    it's a post request that requires data
+    data: the json data
+    data["email"]: the email of the new user
+    data["password"]: the password of the user that will be hashed before
+    entry into the database
+    data["username"]: the username the user prefere
+"""
 @user_app_views.route('/users', methods=["POST"], strict_slashes=False)
 def create_user():
-    """ Creates a new user
+    """ Creates a new user into the database
     """
     from api.views.db import Users
     from app import db

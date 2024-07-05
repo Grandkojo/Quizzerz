@@ -1,216 +1,341 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="{{ url_for('static', filename='images/Quizzerz icon.png') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-        <title>Quizzers - Admin</title>
-        <style>
-            body {
-                font-family: "Lato", sans-serif;
-                /* Adjust to the height of the navbar */
-            }
-            
-            .sidebar {
-                height: 100%;
-                width: 200px;
-                position: fixed;
-                top: 60px; /* Align with the navbar height */
-                left: -200px; /* Hidden by default */
-                background-color: #111;
-                overflow-x: hidden;
-                transition: 0.5s;
-                padding-top: 20px;
-                z-index: 3; /* Ensure it is above the content */
-            }
-            
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
-            
-            .sidebar a:hover {
-                color: #f1f1f1;
-            }
-            
-            .sidebar .closebtn {
-                position: absolute;
-                top: 0;
-                right: 25px;
-                font-size: 36px;
-                margin-left: 50px;
-            }
-            
-            .openbtn {
-                font-size: 10px;
-                cursor: pointer;
-                background-color: #111;
-                color: white;
-                padding: 10px 15px;
-                border: none;
-                display: none; /* Initially hidden */
-            }
-            
-            .openbtn:hover {
-                background-color: #444;
-            }
-            
-            #main {
-                transition: margin-left .5s;
-                padding: 16px;
-                margin-left: 200px; /* Align with sidebar width */
-                margin-top: 30px; /* Align with navbar height */
-            }
-
-            .navbar {
-                z-index: 2; /* Higher than sidebar */
-            }
-            
-            /* Media query for medium and smaller screens */
-            @media screen and (max-width: 768px) {
-                .sidebar {
-                    width: 200px;
-                    left: -200px; /* Hidden by default */
-                    /* padding-top: 20px; */
-                    top: 0px; /*Align with navbar height*/
-                }
-                #main {
-                    margin-left: 0;
-                }
-                .openbtn {
-                    display: block; /* Show on medium and smaller screens */
-                }
-                .sidebar .closebtn {
-                    display: none; /* Show on medium and smaller screens */
-                }
-            }
-            
-            /* Hide the close button on large screens */
-            @media screen and (min-width: 769px) {
-                .sidebar {
-                    left: 0; /* Visible by default */
-                }
-                .sidebar .closebtn {
-                    display: none;
-                }
-            }
-            .sidebar a {
-                text-decoration: none;
-            }
-            
-        </style>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/Quizzerz icon.png') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Quizzers - Admin</title>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
         
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color:cadetblue;">
-            <div class="navbar-header" style="width: 100%; display: flex; justify-content: end; align-items: center;">
-                <div class="col-3">
-                    <a class="navbar-brand" style="color: beige;" href="#">Quizzerz</a>
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 55px;
+            left: -200px;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 3;
+        }
+        
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+        
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+        
+        .openbtn {
+            font-size: 10px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            display: none;
+        }
+        
+        .openbtn:hover {
+            background-color: #444;
+        }
+        
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 200px;
+            margin-top: 30px;
+        }
+
+        .navbar {
+            z-index: 2;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                left: -200px;
+                top: 30px;
+            }
+            #main {
+                margin-left: 0;
+            }
+            .openbtn {
+                display: inline-block;
+                margin-top: 10px;
+            }
+            .sidebar .closebtn {
+                display: none;
+            }
+        }
+        
+        @media screen and (min-width: 769px) {
+            .sidebar {
+                left: 0;
+            }
+            .sidebar .closebtn {
+                display: none;
+            }
+        }
+
+        .sidebar a {
+            text-decoration: none;
+        }
+        
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            animation: spin 2s linear infinite;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color:cadetblue;">
+        <!-- <div class="navbar-header" style="width: 100%; display: flex; justify-content: end; align-items: center;"> -->
+            <div class="row">
+                <div class="col-sm-3 col-xs-3">
+                    <a class="navbar-brand" style="color: beige; margin-top: 5px; font-size: xx-large;" href="#">Quizzerz</a>
                 </div>
-                <div class="col-4">
+                <div class="col-sm-4 col-xs-7">
                     {% if session.get("admin_user") %}
-                    <h3 class="text-center">Welcome, {{ session.admin_user.get("name") }} </h3>
+                    <h3 class="text-center" style="padding-bottom: 10px;">Welcome, {{ session.admin_user.get("name") }} </h3>
                     {% endif %}
                 </div>
-                <div class="col-5 d-flex justify-content-end">
+                <div class="col-sm-5 col-xs-2">
                     <button class="openbtn" onclick="toggleNav()">☰ </button>  
                 </div>
             </div>
-        </nav>
-        
-        <div id="mySidebar" class="sidebar">
-            <!-- <ul class="navbar-nav nav-tabs flex-column"> -->
-                <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
-                <li class="nav-item">
-                    <a href="#" class="active text-primary" onclick="loadContent('{{ url_for('admin_bp.dashboard') }}')"><p style="font-size: large;"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</p></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#questions" onclick="loadContent('{{ url_for('admin_bp.questions') }}')"><p style="font-size: large;"><i class="fa fa-question-circle" aria-hidden="true"></i> Questions</p></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#users" onclick="loadContent('{{ url_for('admin_bp.users') }}')"><p style="font-size: large;"><i class="fa fa-users" aria-hidden="true"></i> Users</p></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#results" onclick="loadContent('{{ url_for('admin_bp.results') }}')"><p style="font-size: large;"><i class="fa fa-address-book" aria-hidden="true"></i> Results</p></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#profile" onclick="loadContent('{{ url_for('admin_bp.profile') }}')"><p style="font-size: large;"><i class="fa fa-user" aria-hidden="true"></i> Profile</p></a>
-                </li>
-            <!-- </ul> -->
-        </div>
-
-        <div id="main" class="container">
-            <div id="content">
-                <!-- Default content can be set here or loaded dynamically on page load using JavaScript -->
-            </div>
-        </div>
-        
-        <script>
-        function toggleNav() {
-            var sidebar = document.getElementById("mySidebar");
-            if (sidebar.style.left === "0px") {
-                sidebar.style.left = "-200px";
-            } else {
-                sidebar.style.left = "0px";
-            }
-        }
+        <!-- </div> -->
+    </nav>
     
-        function adjustSidebar() {
-            var sidebar = document.getElementById("mySidebar");
-            if (window.innerWidth > 768) {
-                sidebar.style.left = "0";
-                document.getElementById("main").style.marginLeft = "200px";
-            } else {
-                sidebar.style.left = "-200px";
-                document.getElementById("main").style.marginLeft = "0";
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
+        <li class="nav-item">
+            <a href="#" data-url="{{ url_for('admin_bp.dashboard') }}" onclick="loadContent(this)" class="nav-link"><p style="font-size: large;"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</p></a>
+        </li>
+        <li class="nav-item">
+            <a href="#questions" data-url="{{ url_for('admin_bp.questions') }}" onclick="loadContent(this)" class="nav-link"><p style="font-size: large;"><i class="fa fa-question-circle" aria-hidden="true"></i> Questions</p></a>
+        </li>
+        <li class="nav-item">
+            <a href="#users" data-url="{{ url_for('admin_bp.users') }}" onclick="loadContent(this)" class="nav-link"><p style="font-size: large;"><i class="fa fa-users" aria-hidden="true"></i> Users</p></a>
+        </li>
+        <li class="nav-item">
+            <a href="#results" data-url="{{ url_for('admin_bp.results') }}" onclick="loadContent(this)" class="nav-link"><p style="font-size: large;"><i class="fa fa-address-book" aria-hidden="true"></i> Results</p></a>
+        </li>
+        <li class="nav-item">
+            <a href="#profile" data-url="{{ url_for('admin_bp.profile') }}" onclick="loadContent(this)" class="nav-link"><p style="font-size: large;"><i class="fa fa-user" aria-hidden="true"></i> Profile</p></a>
+        </li>
+    </div>
+
+    <div id="main" class="container">
+        <div class="container" style="display: flex; justify-content: center; align-content: center;">
+            <div class="loader" id="main_loader"></div>
+        </div>
+        <div id="content">
+            <!-- Default content can be set here or loaded dynamically on page load using JavaScript -->
+        </div>
+    </div>
+    
+    <script>
+    let isFirstLoad = true; // Flag to check if it's the first load
+
+    function toggleNav() {
+        var sidebar = document.getElementById("mySidebar");
+        if (sidebar.style.left === "0px") {
+            sidebar.style.left = "-200px";
+        } else {
+            sidebar.style.left = "0px";
+        }
+    }
+
+    function adjustSidebar() {
+        var sidebar = document.getElementById("mySidebar");
+        if (window.innerWidth > 768) {
+            sidebar.style.left = "0";
+            document.getElementById("main").style.marginLeft = "200px";
+        } else {
+            sidebar.style.left = "-200px";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const loader = document.getElementById('main_loader');
+        loader.style.display = 'inline-block';
+        const activeUrl = sessionStorage.getItem('activeUrl');
+        if (activeUrl) {
+            loadContentByUrl(activeUrl);
+            setActiveLink(activeUrl);
+        } else {
+            if (isFirstLoad) {
+                var dashboardLink = document.querySelector('.nav-link[data-url="{{ url_for('admin_bp.dashboard') }}"]');
+                if (dashboardLink) {
+                    dashboardLink.click();
+                }
+                isFirstLoad = false;
             }
         }
+        loader.style.display = 'none';
+    });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Simulate click on the Dashboard link to load its content by default
-            var dashboardLink = document.querySelector('.active.text-primary');
-            if (dashboardLink) {
-                dashboardLink.click(); // Trigger click event
+    function loadContent(element) {
+        const loader = document.getElementById('main_loader');
+        loader.style.display = 'inline-block';
+        const url = element.getAttribute('data-url');
+        sessionStorage.setItem('activeUrl', url);
+
+        setActiveLink(url);
+        loadContentByUrl(url);
+        
+        loader.style.display = 'none';
+    }
+
+    function setActiveLink(url) {
+        document.querySelectorAll('.nav-item a').forEach(function(item) {
+            item.classList.remove('active', 'text-primary');
+            if (item.getAttribute('data-url') === url) {
+                item.classList.add('active', 'text-primary');
             }
         });
-        
-        function loadContent(url) {
-            // Remove active text-primary class from all links
-            document.querySelectorAll('.nav-item a').forEach(function(item) {
-                item.classList.remove('active', 'text-primary');
+    }
+
+    function loadContentByUrl(url) {
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('content').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
+    }
 
-            // Add active text-primary class to the clicked link
-            event.target.closest('a').classList.add('active', 'text-primary');
+    window.addEventListener('resize', adjustSidebar);
 
-            // Implement your content loading logic here (e.g., using AJAX)
-            // Example AJAX request:
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('main').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+    adjustSidebar();
+    
+    </script> 
+    <script>
+        // for admin add_question
+        function processForm() {
+            const loader = document.getElementById('loader');
+            const questionText = document.getElementById('questionText').value;
+            const catAliasElement = document.querySelector('input[name="category"]:checked');
+            
+            // Validate question text
+            if (!questionText.trim()) {
+                alert('Question text is required.');
+                return;
+            }
+    
+            // Validate category alias
+            if (!catAliasElement) {
+                alert('Please select a category.');
+                return;
+            }
+            const catAlias = catAliasElement.value;
+    
+            // Validate answer options
+            const answerOptions = [];
+            let hasValidAnswer = false;
+            for (let i = 1; i <= 3; i++) { 
+                const answerText = document.getElementById(`answerText${i}`).value;
+                const isCorrectElement = document.querySelector(`input[name="is_correct_${i}"]:checked`);
+                
+                if (!answerText.trim()) {
+                    alert(`Answer option ${i} is required.`);
+                    return;
+                }
+                if (!isCorrectElement) {
+                    alert(`Please select if answer option ${i} is correct or not.`);
+                    return;
+                }
+    
+                const isCorrect = isCorrectElement.value === "true";
+                answerOptions.push({
+                    answer_text: answerText,
+                    is_correct: isCorrect
                 });
+    
+                if (isCorrect) {
+                    hasValidAnswer = true;
+                }
+            }
+    
+            // Ensure at least one correct answer
+            if (!hasValidAnswer) {
+                alert('At least one correct answer is required.');
+                return;
+            }
+    
+            const data = {
+                question_text: questionText,
+                cat_alias: catAlias,
+                answer_options: answerOptions
+            };
+    
+            loader.style.display = 'inline-block'; // Show the loader
+    
+            fetch('{{ url_for('questions_app_views.add_question') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    // Close the modal
+                    $('#myModal').modal('hide');
+                    location.reload()
+                    alert(data.message);
+                    // Optionally reload the content to show the new question
+                    // loadContent('{{ url_for('admin_bp.questions') }}');
+                } else {
+                    alert('Error: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding the question.');
+            })
+            .finally(() => {
+                loader.style.display = 'none'; // Hide the loader
+            });
         }
-
-    
-        window.addEventListener('resize', adjustSidebar);
-    
-        // Initial adjustment to ensure correct state on page load
-        adjustSidebar();
-    
-        // Load default content (dashboard) on page load
-        
-        </script> 
-    </body>
-    </html>
+    </script>
+</body>
+</html>

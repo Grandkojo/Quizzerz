@@ -11,9 +11,14 @@ def get_all_questions():
     questions = QuestionDetails.query.all()
     return jsonify([question.to_dict() for question in questions])
 
+
+""" This api retrieves a specific question in the database by id.
+    It's a GET request 
+"""
 @questions_app_views.route('questions/<int:question_id>', methods=["GET"], strict_slashes=False)
 def get_question_by_id(question_id):
-    """ Retrieves a user object
+    """ Retrieves a question in the databse by id
+        question_id: the question id to retrieve
     """
     from api.views.db import QuestionDetails
     question = QuestionDetails.query.filter_by(questionid=question_id).first()
@@ -27,21 +32,33 @@ def get_all_answers():
     """
     from api.views.db import AnswerOptions
     answers = AnswerOptions.query.all()
-    return jsonify([answer.to_dict() for answer in answers])
+    return jsonify([answer.to_dict() for answer in answers]), 201
 
+""" This api retrieves a specific question in the database by id.
+    It's a GET request 
+"""
 @questions_app_views.route('/answers/<int:question_id>', methods=["GET"], strict_slashes=False)
 def get_answer_by_questionid(question_id):
     """ Retrieves the list of all answer objects
+        question_id: the question id to retrieve
     """
     from api.views.db import AnswerOptions
     answers = AnswerOptions.query.filter_by(questionid=question_id).all()
 
-    return jsonify([answer.to_dict() for answer in answers])
+    return jsonify([answer.to_dict() for answer in answers]), 201
 
 
+
+""" This api adds a new question to the database using the api.
+    It's a post request that requires some parameters
+    data: the json data
+    data["question_text"]: The question text you want to add
+    data["cat_alias]: the category of question you are adding
+    data["answer_options"]: the options that are related to the question
+"""
 @questions_app_views.route('/questions', methods=["POST"], strict_slashes=False)
 def add_question():
-    """ Add a new question """
+    """ Add a new question to the database """
     from api.views.db import Categories, QuestionDetails, Questions, AnswerOptions
     from app import db
     data = request.get_json()
