@@ -8,13 +8,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    <title>Quizzers - Admin Questions </title>
+    <title>Quizzers - Admin Questions</title>
     <style>
         #main {
             transition: margin-left 0.5s;
             padding: 16px;
             margin-left: 30px;
-            /*Align with sidebar width */
+            /* Align with sidebar width */
             margin-top: 20px;
             /* Align with navbar height */
         }
@@ -28,7 +28,7 @@
                 <p style="font-size: 40px">Questions</p>
             </div>
             <div class="col-sm-7 col-xs-7" style="display: flex; justify-content: end; align-items: end;">
-                <button type="button" data-toggle="modal" data-target="#myModal" style="height: 50px; width: auto;">Add question</button>
+                <button type="button" data-toggle="modal" data-target="#add_question_modal" style="height: 50px; width: auto;">Add question</button>
             </div>
         </div>
         <div class="container mt-5">
@@ -48,7 +48,14 @@
                         <td>{{ question.cat_alias }}</td>
                         <td>{{ question.question_text }}</td>
                         <td>
-                            <button onclick="showDetails('{{ loop.index }}')" id="showDetails">View options</button>
+                            <button type="button" onclick="viewOptions('{{ question.question_detailid }}')">View options</button>
+                            <div id="options-{{ question.question_detailid }}" style="display: none;">
+                                {% for answer in answers %}
+                                    {% if answer.questionid == question.question_detailid %}
+                                        <pre>{{ answer.answer_text }} - {{ answer.is_correct }}</pre>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -56,63 +63,103 @@
             </table>
         </div>
         {% endif %}
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Add a new question</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="addQuestionForm" autocomplete="off">
-                        <div class="form-group">
-                            <label for="questionText">Question Text:</label>
-                            <input type="text" class="form-control" id="questionText" name="question_text" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="catAlias">Category Alias:</label>
-                            <div>
-                                <label><input type="radio" name="category" value="sci" required> Science</label>
-                                <label><input type="radio" name="category" value="mat" required> Mathematics</label>
-                                <label><input type="radio" name="category" value="geo" required> Geography</label>
-                                <label><input type="radio" name="category" value="eng" required> English</label>
-                            </div>
-                        </div>
-                        <div id="answerOptionsContainer">
-                            <div class="form-group answer-option">
-                                <label for="answerText1">Answer Option 1:</label>
-                                <input type="text" class="form-control" id="answerText1" name="answer_text_1" required>
-                                <label><input type="radio" name="is_correct_1" value="true" required> True</label>
-                                <label><input type="radio" name="is_correct_1" value="false" required> False</label>
-                            </div>
-                            <div class="form-group answer-option">
-                                <label for="answerText2">Answer Option 2:</label>
-                                <input type="text" class="form-control" id="answerText2" name="answer_text_2" required>
-                                <label><input type="radio" name="is_correct_2" value="true" required> True</label>
-                                <label><input type="radio" name="is_correct_2" value="false" required> False</label>
-                            </div>
-                            <div class="form-group answer-option">
-                                <label for="answerText3">Answer Option 3:</label>
-                                <input type="text" class="form-control" id="answerText3" name="answer_text_3" required>
-                                <label><input type="radio" name="is_correct_3" value="true" required> True</label>
-                                <label><input type="radio" name="is_correct_3" value="false" required> False</label>
-                            </div>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-primary" id="submit_button" onclick="processForm()">Submit
-                                <span class="loader" id="loader"></span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-        </div>
     </div>
     
+    <!-- Add Question Modal -->
+    <div class="modal fade" id="add_question_modal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Add a new question</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addQuestionForm" autocomplete="off">
+                    <div class="form-group">
+                        <label for="questionText">Question Text:</label>
+                        <input type="text" class="form-control" id="questionText" name="question_text" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="catAlias">Category Alias:</label>
+                        <div>
+                            <label><input type="radio" name="category" value="sci" required> Science</label>
+                            <label><input type="radio" name="category" value="mat" required> Mathematics</label>
+                            <label><input type="radio" name="category" value="geo" required> Geography</label>
+                            <label><input type="radio" name="category" value="eng" required> English</label>
+                        </div>
+                    </div>
+                    <div id="answerOptionsContainer">
+                        <div class="form-group answer-option">
+                            <label for="answerText1">Answer Option 1:</label>
+                            <input type="text" class="form-control" id="answerText1" name="answer_text_1" required>
+                            <label><input type="radio" name="is_correct_1" value="true" required> True</label>
+                            <label><input type="radio" name="is_correct_1" value="false" required> False</label>
+                        </div>
+                        <div class="form-group answer-option">
+                            <label for="answerText2">Answer Option 2:</label>
+                            <input type="text" class="form-control" id="answerText2" name="answer_text_2" required>
+                            <label><input type="radio" name="is_correct_2" value="true" required> True</label>
+                            <label><input type="radio" name="is_correct_2" value="false" required> False</label>
+                        </div>
+                        <div class="form-group answer-option">
+                            <label for="answerText3">Answer Option 3:</label>
+                            <input type="text" class="form-control" id="answerText3" name="answer_text_3" required>
+                            <label><input type="radio" name="is_correct_3" value="true" required> True</label>
+                            <label><input type="radio" name="is_correct_3" value="false" required> False</label>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary" id="submit_button" onclick="processForm()">Submit
+                            <span class="loader" id="loader"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- View Options Modal -->
+    <div class="modal fade" id="view_options_modal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Options</h4>
+            </div>
+            <div class="modal-body" id="modalContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
 </body>
 </html>
+
+<script>
+    function viewOptions(questionId) {
+        const detailsElement = document.getElementById('options-' + questionId);
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = detailsElement.innerHTML;
+        $('#view_options_modal').modal('show');
+    }
+
+    // Event listener to close the modal
+    document.querySelector('.close').addEventListener('click', function() {
+        $('#view_options_modal').modal('hide');
+    });
+
+    // Close the modal if the user clicks outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('view_options_modal');
+        if (event.target == modal) {
+            $('#view_options_modal').modal('hide');
+        }
+    };
+</script>

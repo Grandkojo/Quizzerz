@@ -23,9 +23,10 @@
 </head>
 
 <body>
-    <div class="container" style="display: flex; justify-content: center; align-content: center;">
-        <div class="loader" id="main_loader"></div>
-    </div>
+    <!-- <div id="admin_loader_container" class="admin_dashboard_container" style="display: flex; justify-content: center; align-content: center; margin-top: 100px;">
+        <div class="loader" id="admin_loader"></div>
+    </div> -->
+    </span>
     {% if quiz_count and users_count and questions_count %}
     <div id="main" class="container">
         <p style="font-size: 40px">Dashboard</p>
@@ -43,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#question" onclick="loadContent('{{ url_for('admin_bp.questions') }}')">
+                    <a href="#questions" data-url="{{ url_for('admin_bp.questions') }}" onclick="loadContent(this)">
                         <div class="panel-footer">
                             <span class="pull-left"> View Details </span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -67,7 +68,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#users" onclick="loadContent('{{ url_for('admin_bp.users') }}')">
+                    <a href="#users" data-url="{{ url_for('admin_bp.users') }}" onclick="loadContent(this)">
                         <div class="panel-footer">
                             <span class="pull-left"> View Details </span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -91,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#results" onclick="loadContent('{{ url_for('admin_bp.results') }}')">
+                    <a href="#results" data-url="{{ url_for('admin_bp.results') }}" onclick="loadContent(this)">
                         <div class="panel-footer">
                             <span class="pull-left"> View Details </span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i>

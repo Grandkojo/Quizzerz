@@ -8,15 +8,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    <title>Quizzers - User Results </title>
+    <title>Quizzers - User Results</title>
     <style>
         #main {
             transition: margin-left 0.5s;
             padding: 16px;
             margin-left: 30px;
-            /*Align with sidebar width */
             margin-top: 20px;
-            /* Align with navbar height */
+        }
+
+        #showDetails {
+            background-color: beige;
+            border-radius: 5px;
+        }
+
+        #showDetails:hover {
+            background-color: burlywood;
         }
     </style>
 </head>
@@ -27,10 +34,6 @@
             <div class="col-5">
                 <p style="font-size: 40px">User Results</p>
             </div>
-            <!-- <div class="col-7 d-flex justify-content-end">
-                <button >Add user</button>
-            </div> -->
-
         </div>
         <div class="container mt-5">
             <table class="table table-hover">
@@ -40,7 +43,6 @@
                         <th>Category</th>
                         <th>Time Taken</th>
                         <th>Result</th>
-                        <th>Quiz Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,9 +52,7 @@
                         <td>{{ result.catalias }}</td>
                         <td>{{ result.timestamp.strftime('%-d-%b-%Y: %H:%M') }}</td>
                         <td>{{ result.result }}</td>
-                        <td>
-                            <button>View Details</button>
-                        </td>
+                       
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -60,6 +60,21 @@
         </div>
         {% endif %}
     </div>
-    
+
+    <div class="modal fade" id="view_details_modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Quiz Details</h4>
+                </div>
+                <div class="modal-body" id="modalContent"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

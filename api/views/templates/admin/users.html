@@ -21,14 +21,17 @@
     </style>
 </head>
 <body>
+    <!-- <div id="user_loader_container" class="admin_dashboard_container" style="display: flex; justify-content: center; align-content: center; margin-top: 100px;">
+        <div class="loader" id="user_loader"></div>
+    </div> -->
     <div id="main" class="container">
         {% if users %}
         <div class="row">
-            <div class="col-5">
+            <div class="col-sm-5 col-xs-5">
                 <p style="font-size: 40px">Users</p>
             </div>
-            <div class="col-7 d-flex justify-content-end">
-                <button >Add user</button>
+            <div class="col-sm-7 col-xs-7" style="display: flex; justify-content: end; align-items: end;">
+                <!-- <button type="button" data-toggle="modal" data-target="#myModal" style="height: 50px; width: auto;">Add User</button -->
             </div>
 
         </div>
@@ -47,15 +50,13 @@
                         <td>{{ user.userid }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
-                        <td>
-                            <button>View Results</button>
-                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
         {% endif %}
+    
     </div>
     
 </body>
