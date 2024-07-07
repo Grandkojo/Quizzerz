@@ -32,7 +32,6 @@
             transition: transform 0.3s ease, background-color 0.3s ease;
             border-radius: 10px;
         }
-
         button:hover {
             transform: scale(1.1);
         }
@@ -41,12 +40,10 @@
             flex-direction: column;
             justify-content: center;
             padding: 20px;
-            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
         }
         div p {
             font-size: x-large;
         }
-
         .navbar.navbar-expand-sm.navbar-dark.fixed-top {
             background-color: rgb(0, 213, 255);
             box-shadow: 0 2px 40px 0 rgba(0, 0, 0, 0.5);
@@ -54,11 +51,48 @@
         .dropdown-toggle::after {
             display: none;
         }
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader img {
+            width: 60px;
+            height: auto;
+        }
+
+        .round_loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            animation: spin 2s linear infinite;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <div class="loader" id="loader">
+        <div class="container d-flex justify-content-center align-items-center">
+            <img src="{{ url_for('static', filename='images/Quizzerz logo.png') }}" alt="Loading...">
+            <div class="round_loader d-flex justify-content-center align-items-center" id="round_loader"></div>
+        </div>
+    </div>
+
     {% if session.get("user") %}
-    <!-- {{ session.user.get("username") }} -->
     <header class="navbar navbar-expand-sm navbar-dark fixed-top">
         <div class="col-6 pt-2">
             <p>Hello, {{ session.user.get("username") | title }}</p>
@@ -68,36 +102,76 @@
         <div class="dropdown" style="right: 10%;">
             <i class="fa fa-3x fa-user-circle dropdown-toggle" data-bs-toggle="dropdown" style="cursor: pointer"></i>
             <ul class="dropdown-menu border border-2 border-primary rounded-2 ">
-                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_profile" href="#"><small><i class="fa fa-edit" aria-hidden="true"></i> Edit profile</small></a></li>
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_profile" href="#" id="edit_profile"><small><i class="fa fa-edit" aria-hidden="true"></i> Edit profile</small></a></li>
                 <li><a class="dropdown-item" href="{{ url_for('user_bp.results_history') }}"><small><i class="fa fa-bar-chart" aria-hidden="true"></i> Results</small></a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{ url_for('user_bp.logout') }}" id="logOut"><small><i class="fa fa-sign-out" aria-hidden="true"></i> Log Out</small></a></li>
             </ul>
         </div>
     </div>
-    
-        <!-- <div class="col-6 d-flex justify-content-end ms-4">
-            <a href=""></a><i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
-        </div> -->
     </header>
     <h1 style="font-family: cursive; padding: 50px;font-weight: bolder; width: 700px; text-align: center; ">Welcome to Quizzerz</h1>
     <div>
         <h2 style="font-size: x-large; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: bold;">Choose an area to be quizzed</h2>
     </div>
     <div class="options">
-        <a href="{{ url_for('user_bp.quiz', sect='geo') }}">
+        <a href="{{ url_for('user_bp.quiz', sect='geo') }}" class="quiz-link">
             <button class="bg-success"><p>Geography</p></button>
         </a>
-        <a href="{{ url_for('user_bp.quiz', sect='sci') }}">
+        <a href="{{ url_for('user_bp.quiz', sect='sci') }}" class="quiz-link">
             <button class="bg-secondary"><p>Science</p></button>
         </a>
-        <a href="{{ url_for('user_bp.quiz', sect='eng') }}">
+        <a href="{{ url_for('user_bp.quiz', sect='eng') }}" class="quiz-link">
             <button class="bg-danger"><p>English</p></button>
         </a>
-        <a href="{{ url_for('user_bp.quiz', sect='mat') }}">
+        <a href="{{ url_for('user_bp.quiz', sect='mat') }}" class="quiz-link">
             <button class="bg-info"><p>Mathematics</p></button>
         </a>
     </div>
-    <!-- <header class="header-container"></header> -->
+    <script>
+        // Show loader when a link is clicked
+        document.querySelectorAll('.quiz-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('loader').style.display = 'flex';
+            });
+        });
+
+        // Hide loader on page load
+        window.addEventListener('load', function() {
+            document.getElementById('loader').style.display = 'none';
+        });
+
+        // Hide loader when navigating back
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+
+        //round loader
+        // Show loader when a link is clicked
+        document.querySelectorAll('.quiz-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('round_loader').style.display = 'block';
+            });
+        });
+
+        // Hide loader on page load
+        window.addEventListener('load', function() {
+            document.getElementById('round_loader').style.display = 'none';
+        });
+
+        // Hide loader when navigating back
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                document.getElementById('round_loader').style.display = 'none';
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("edit_profile").addEventListener("click", function(){
+            alert("Feature is in progress, try again later")
+        });
+    </script>
 </body>
 </html>

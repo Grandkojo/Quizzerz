@@ -13,6 +13,16 @@
         /* .form-container {
             height: 70px;
         } */
+        .login_button{
+            background-color: rgba(103, 44, 61, 0.581); 
+            color:black; 
+            font-weight: bold; 
+            border-radius: 5px;
+        }
+
+        .login_button:hover{
+            background-color: antiquewhite;
+        } 
     </style>
 </head>
 <body style="display: flex; justify-content: center;
@@ -29,23 +39,33 @@ align-items: center; margin: 0;">
             <br>
             <input type="password" name="user_password" id="user_password" placeholder="enter your password" required>
             <br>
-            <a href="{{ url_for('user_bp.forgot_password') }}" style="text-decoration: none; display: flex; position: relative; justify-content: end; font-weight: bold;">forgot password?</a>
+            <a href="{{ url_for('user_bp.forgot_password') }}" style="text-decoration: none; display: flex; position: relative; justify-content: end;">forgot password?</a>
             <br>
-            <button type="submit" class="signup_button" style="background-color: rgba(103, 44, 61, 0.581); color:black; font-weight: bold; border-radius: 5px;"> Log in </button>
+            <button type="submit" class="login_button"> Log in </button>
             <br>
             <h5 style="margin: 35px;">or continue with</h5>
     
-            <a href="{{url_for('user_bp.google_login')}}" style="text-decoration: none;">
+            <!-- <a href="{{url_for('user_bp.google_login')}}" style="text-decoration: none;" id="google_login_button"> -->
+                <button type="button" class="btn-light btn-google"id="google_login_button">
+                    <img src="{{ url_for('static', filename='images/google_icon.png')}}" alt="google_icon" style="height: 25px; width: auto;"><p>Google</p> 
+                </button>
+            <!-- </a> -->
+            <!-- <a href="{{url_for('user_bp.google_login')}}" style="text-decoration: none;" id="google_login_button">
                 <button type="button" class="btn-light btn-google">
                     <img src="{{ url_for('static', filename='images/google_icon.png')}}" alt="google_icon" style="height: 25px; width: auto;"><p>Google</p> 
                 </button>
-            </a>
+            </a> -->
 
             <a href="{{url_for('user_bp.signup')}}">
-                <h5 style="position: relative; top: 5%;">Don't have an account? Create an account</h5>
+                <p style="position: relative; top: 5%;">Don't have an account? Create an account</p>
             </a>
         </form>
     </div>
-
+    <script>
+        document.getElementById('google_login_button').addEventListener('click', function() {
+            alert("This feature is currently in maintenance, try again later.")
+            return;
+        });
+    </script>
 </body>
 </html>

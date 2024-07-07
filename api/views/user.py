@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, redirect, session, url_for, render_template, flash
 import requests
 import json
+from sqlalchemy.exc import OperationalError
 # from authlib.integrations.flask_client import OAuth
 from datetime import datetime
 # from api.views import user_blueprint
@@ -40,24 +41,28 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Check if the email or username already exists
-        existing_user = Users.query.filter((Users.email == email) | (Users.username == username)).first()
+        try:
+            existing_user = Users.query.filter((Users.email == email) | (Users.username == username)).first()
         
-        if existing_user:
-            if existing_user.email == email:
-                error = "Email already exists, login instead"
-            elif existing_user.username == username:
-                error = "Username already exists, try another"
-        else:
-            new_user = Users(username=username, email=email)
-            new_user.set_password(password)
-            db.session.add(new_user)
-            db.session.commit()
-            session.permanent = True
-            session['user'] = {"user_id":new_user.userid, "email": email, "username": username}
-            print(session['user'])
-            return redirect(url_for('user_bp.signup_complete'))
-        
-        return render_template('signup.html', error=error)
+            if existing_user:
+                if existing_user.email == email:
+                    error = "Email already exists, login instead"
+                elif existing_user.username == username:
+                    error = "Username already exists, try another"
+            else:
+                new_user = Users(username=username, email=email)
+                new_user.set_password(password)
+                db.session.add(new_user)
+                db.session.commit()
+                session.permanent = True
+                session['user'] = {"user_id":new_user.userid, "email": email, "username": username}
+                print(session['user'])
+                return redirect(url_for('user_bp.signup_complete'))
+            
+            return render_template('signup.html', error=error)
+        except OperationalError:
+            return render_template("error.html", message="Unable to connect to the server, Please check your network connection and try again")
+
     
     elif request.method == "GET":
         user = session.get("user")
@@ -97,15 +102,18 @@ def quizzerz_login():
             error = "Email and password are required."
             return render_template("login.html", error=error)
 
-        user = Users.query.filter_by(email=email).first()
-        if user and user.check_password(password):
-            session.permanent = True
-            session['user'] = {"user_id":user.userid, "email": email, "username": user.username}
-            # return jsonify({"user": session['user']})
-            flash("You were successfully logged in")
-            return redirect(url_for('user_bp.home', method="quizzerz"))
-        else:
-            error = "Invalid email or password"
+        try:
+            user = Users.query.filter_by(email=email).first()
+            if user and user.check_password(password):
+                session.permanent = True
+                session['user'] = {"user_id":user.userid, "email": email, "username": user.username}
+                # return jsonify({"user": session['user']})
+                flash("You were successfully logged in")
+                return redirect(url_for('user_bp.home', method="quizzerz"))
+            else:
+                error = "Invalid email or password"
+        except OperationalError:
+            return render_template("error.html", message="Unable to connect to the server, Please check your network connection and try again")
     
     return render_template("login.html", error=error)
 
@@ -115,12 +123,15 @@ def forgot_password():
     error = None
     if request.method == "POST":
         email = request.form.get("user_email")
-        user = Users.query.filter_by(email=email).first()
-        if user.email:
-            session["user_email_for_update"] = {"email": user.email}
-            return redirect(url_for('user_bp.update_password'))
-        else:
-            error = "Email doesn't exist, please sign up"
+        try:
+            user = Users.query.filter_by(email=email).first()
+            if user.email:
+                session["user_email_for_update"] = {"email": user.email}
+                return redirect(url_for('user_bp.update_password'))
+            else:
+                error = "Email doesn't exist, please sign up"
+        except OperationalError:
+            return render_template("error.html", message="Unable to connect to the server, Please check your network connection and try again")
     return render_template('forgot_password.html', error=error)
 
 @user_blueprint.route('/update_password', methods=["POST", "GET"])
@@ -134,10 +145,13 @@ def update_password():
 
         if user_password == confirm_user_password:
             email = session["user_email_for_update"].get("email")
-            user = Users.query.filter_by(email=email).first()
-            user.set_password(confirm_user_password)
-            db.session.commit()
-            return redirect(url_for('user_bp.signup'))
+            try:
+                user = Users.query.filter_by(email=email).first()
+                user.set_password(confirm_user_password)
+                db.session.commit()
+                return redirect(url_for('user_bp.signup'))
+            except OperationalError:
+                return render_template("error.html", message="Unable to connect to the server, Please check your network connection and try again")
         error = "Passwords do not match"
         return render_template("update_password.html", error=error)
     return render_template("update_password.html")
@@ -171,15 +185,18 @@ def authorize():
 def quiz(sect):
     """ 
     """
+    import random
     from api.views.db import QuestionDetails, AnswerOptions
     sections = ['mat', 'sci', 'geo', 'eng']
 
     if session.get("user"):
         if sect in sections:
-            questions = QuestionDetails.query.filter_by(cat_alias=sect).all()
-            question_ids = [q.questionid for q in questions]
-            options = AnswerOptions.query.filter(AnswerOptions.questionid.in_(question_ids)).all()
-
+            try:
+                questions = QuestionDetails.query.filter_by(cat_alias=sect).all()
+                question_ids = [q.questionid for q in questions]
+                options = AnswerOptions.query.filter(AnswerOptions.questionid.in_(question_ids)).all()
+            except OperationalError:
+                return render_template("error.html", message="Unable to connect to the server, Please check your network connection and try again")
             combined = []
             for question in questions:
                 question_options = []
@@ -190,11 +207,15 @@ def quiz(sect):
                             "is_correct": opt.is_correct
                         }
                         question_options.append(option_data)
+
+                random.shuffle(question_options)
                 
                 combined.append({
                     "question_text": question.question_text,
                     "options": question_options
                 })
+            
+            random.shuffle(combined)
             
             session.permanent = True
             session["quiz_details"] = combined
@@ -215,9 +236,13 @@ def calculate_score():
 
     sect = data['sect']
 
-    questions = QuestionDetails.query.filter_by(cat_alias=sect).all()
-    question_ids = [q.questionid for q in questions]
-    answer_solution = AnswerOptions.query.with_entities(AnswerOptions.answerid, AnswerOptions.is_correct).filter(AnswerOptions.answer_text.in_(selected_answers)).all()
+    try:
+
+        questions = QuestionDetails.query.filter_by(cat_alias=sect).all()
+        question_ids = [q.questionid for q in questions]
+        answer_solution = AnswerOptions.query.with_entities(AnswerOptions.answerid, AnswerOptions.is_correct).filter(AnswerOptions.answer_text.in_(selected_answers)).all()
+    except OperationalError:
+        return render_template("error.html", message="Unable to connect to the server, please check your network connection and try again")
     # answer_id = AnswerOptions.query.with_entities(AnswerOptions.answerid, AnswerOptions.answer_text, AnswerOptions.is_correct).filter(AnswerOptions.questionid.in_(question_ids)).all()
     # options = AnswerOptions.query.filter(AnswerOptions.questionid.in_(question_ids)).all()
     # correct_answers = AnswerOptions.query.with_entities(AnswerOptions.answer_text, AnswerOptions.is_correct).filter(AnswerOptions.answer_text.in_(selected_answers)).all()
@@ -281,10 +306,13 @@ def results():
     # existing_result = QuizResults.query.filter_by(userid=user_id, catalias=category).first()
     # if not existing_result:
     if not session.get('results_processed'):
-        results = QuizResults(userid=user_id, catalias=category, result=quiz_score, details=quiz_details, timestamp=datetime.now())
-        db.session.add(results)
-        db.session.commit()
-        session['results_processed'] = True
+        try:
+            results = QuizResults(userid=user_id, catalias=category, result=quiz_score, details=quiz_details, timestamp=datetime.now())
+            db.session.add(results)
+            db.session.commit()
+            session['results_processed'] = True
+        except OperationalError:
+            return render_template("error.html", message="Unable to connect to the server, Please check your network connection and try again")
 
     return render_template('user_results.html', score=score, quiz_details=quiz_details)
     
@@ -313,8 +341,10 @@ def results_history():
     # category = request.args.get('category')
     # if not category:
     #     return "Category not specified."
-
-    history = QuizResults.query.filter_by(userid=user_id).order_by(QuizResults.timestamp.desc()).all()
+    try:
+        history = QuizResults.query.filter_by(userid=user_id).order_by(QuizResults.timestamp.desc()).all()
+    except OperationalError:
+        return render_template("error.html", message="Unable to connect to the server, Please check your network connection and try again")
     return render_template("results_history.html", history=history)
 
 @user_blueprint.route("/logout")

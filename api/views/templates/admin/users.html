@@ -50,6 +50,9 @@
                         <td>{{ user.userid }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
+                        <td>
+                            <button class="btn btn-danger" id="delete_user" onclick="confirmDelete({{user.userid}})">Delete</button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

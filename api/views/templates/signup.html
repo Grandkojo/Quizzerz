@@ -9,6 +9,18 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <title>Quizzerz - Signup</title>
+    <style>
+        .signup_button{
+            background-color: rgba(103, 44, 61, 0.581); 
+            color:black; 
+            font-weight: bold; 
+            border-radius: 5px;
+        }
+
+        .signup_button:hover{
+            background-color: antiquewhite;
+        }
+    </style>
 </head>
 <body style="display: flex; justify-content: center;
 align-items: center; margin: 0;">
@@ -25,20 +37,30 @@ align-items: center; margin: 0;">
             <br>
             <input type="text" name="user_name" id="user_name" placeholder="enter your preferred username" required>
             <br>
-            <button type="submit" class="signup_button" style="background-color: rgba(103, 44, 61, 0.581); color:black; font-weight: bold; border-radius: 5px;"> Sign up </button>
+            <button type="submit" class="signup_button" id="signup_button"> Sign up </button>
             <br>
             <h5 style="margin: 20px;">or continue with</h5>
     
-            <a href="{{url_for('user_bp.google_login')}}">
+            <!-- <a href="{{url_for('user_bp.google_login')}}" id="google_login_button"> -->
+                <button type="button" class="btn-light btn-google" id="google_login_button">
+                    <img src="{{ url_for('static', filename='images/google_icon.png')}}" alt="google_icon" style="height: 20px; width: auto;"><p>Google</p> 
+                </button>
+            <!-- </a> -->
+            <!-- <a href="{{url_for('user_bp.google_login')}}" id="google_login_button">
                 <button type="button" class="btn-light btn-google">
                     <img src="{{ url_for('static', filename='images/google_icon.png')}}" alt="google_icon" style="height: 20px; width: auto;"><p>Google</p> 
                 </button>
-            </a>
+            </a> -->
 
             <a href="{{url_for('user_bp.login')}}">
-                <h5 style="position: relative; top: 5%;">Already have an account? Log in</h5>
+                <p style="position: relative; top: 5%;">Already have an account? Log in</p>
             </a>
         </form>
     </div>
+    <script>
+        document.getElementById('google_login_button').addEventListener('click', function() {
+            alert("This feature is currently in maintenance, try again later.")
+        });
+    </script>
 </body>
 </html>

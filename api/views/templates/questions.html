@@ -13,7 +13,6 @@
     <style>
         body {
             display: flex;
-            /* justify-content: center; */
             align-items: center; 
             margin: 0;
             position: relative;
@@ -52,10 +51,6 @@
         }
 
         #quiz-container {
-            /* position: relative; */
-            /* display: flex; */
-            /* justify-content: center; */
-            /* align-items: center; */
             height: 65%;
             width: 500px;
             border: 2px solid #ccc;
@@ -64,23 +59,22 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: block;
             padding-top: 50px;
-            /* text-align: center; */
         }
 
         #next-button {
-           width: 70px;
+           width: 100px;
            height: 40px;
            border-radius: 5px;
            position: relative;
            top: 7%;
-           left: 83%;
+           left: 75%;
            text-align: center;
            color:aliceblue;
            font-size: large;
-           /* display: flex; */
-           /* justify-content: start; */
+           display: flex;
+           align-items: center;
+           justify-content: center;
         }
-
 
         .progress-bar-container {
             width: 65%; 
@@ -106,6 +100,21 @@
                 width: 65%; 
             }
         }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            animation: spin 2s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -119,33 +128,34 @@
     {% elif sect == "eng" %}
         {% set sectid = "English" %}
     {% endif %}
-    {% for question in questions%}
-
-    <!-- <p>{{ question }}</p> -->
+    {% for question in questions %}
     {% endfor %}
     {% endif %}
+    <a href="{{ url_for('user_bp.home')}}" style="text-decoration: none; color: black;" id="home_during_quiz">
+        <i class="fa fa-2x fa-home"></i>
+    </a>
     <h2 class="d-flex justify-content-center align-items-center" style="padding-top: 30px;">How good is your {{sectid}}?</h2>
     <div class="progress-bar-container">
         <div id="progress-bar" class="progress-bar"></div>
     </div>
       
-      <div id="quiz-container">
+    <div id="quiz-container">
         {% for question in questions %}
         <div class="question" id="question-{{ loop.index0 }}">
             <h3>{{ loop.index }}: {{ question.question_text }}</h3>
             <ul>
                 {% for option in question.options %}
-                <p class="pt-3" style="cursor: pointer; color: blue; user-select: none;" id="answer_option" onclick="selected(this)" >
+                <p class="pt-3" style="cursor: pointer; color: blue; user-select: none;" id="answer_option" onclick="selected(this)">
                     {{ option.answer_text }}
                 </p>
                 {% endfor %}
             </ul>
         </div>
         {% endfor %}
-        <button class="bg-primary" id="next-button" style="user-select: none;">Next</button>
+        <div>
+            <button class="bg-primary" id="next-button" style="user-select: none;">Next</button>
+        </div>
     </div>
-
-    
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -154,7 +164,6 @@
             const progressBar = document.getElementById("progress-bar");
             const nextButton = document.getElementById("next-button");
             const section = "{{ sect }}";
-            // let selectedAnswers = [];
     
             function showQuestion(index) {
                 questions.forEach((question, i) => {
@@ -172,17 +181,15 @@
                 if (currentQuestionIndex < questions.length) {
                     showQuestion(currentQuestionIndex);
                     if (currentQuestionIndex === questions.length - 1) {
-                        
                         nextButton.innerText = "Finish";
                     }
                 } else {
                     if (currentQuestionIndex === questions.length) {
-                        sendAnswersToServer(section, answers);
+                        createAndShowLoader();
                         nextButton.setAttribute("disabled", "true");
-                        // alert("You've reached the end of the quiz!");
+                        sendAnswersToServer(section, answers);
                     }
                     console.log(answers);
-                    // Optionally, handle the end of the quiz here
                 }
             });
     
@@ -191,12 +198,18 @@
                 progressBar.style.width = progress + "%";
             }
     
+            function createAndShowLoader() {
+                const loader = document.createElement('span');
+                loader.classList.add('loader');
+                nextButton.appendChild(loader);
+            }
+    
             showQuestion(currentQuestionIndex);
             updateProgressBar();
         });
     
         let selectedOptions = [];
-        let answers = []
+        let answers = [];
 
         function selected(element) {
             const questionIndex = Array.from(document.querySelectorAll(".question")).indexOf(element.closest(".question"));
@@ -212,12 +225,7 @@
             element.style.backgroundColor = "green";
             
             selectedOptions[questionIndex] = element;
-
-            // if (element[questionIndex].innerText !== null){
-                answers[questionIndex] = (selectedOptions[questionIndex].innerText);
-            // }
-            
-            // alert(answers);
+            answers[questionIndex] = selectedOptions[questionIndex].innerText;
         }
 
         function sendAnswersToServer(section, answers) {
@@ -229,23 +237,25 @@
                 body: JSON.stringify({ sect: section, selected_answers: answers })
             })
             .then(response => {
-            //     if (response.redirected) {
-                    window.location.href = response.url;
-            //     } else {
-            //         return response.json();
-                // }
+                window.location.href = response.url;
             })
             .then(data => {
                 if (data) {
                     console.log('Response data:', data);
-                    // Optional: Handle any pre-redirect logic here
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
+
+        document.getElementById('home_during_quiz').addEventListener('click', function(event) {
+            event.preventDefault();
+            var userConfirmation = confirm("If you go home during the quiz, all progress will be lost. Do you want to continue?");
+            if (userConfirmation) {
+                window.location.href = this.href;
+            }
+        });
     </script>
-    
 </body>
 </html>

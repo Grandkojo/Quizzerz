@@ -52,24 +52,28 @@
     </style>
 </head>
 <body>
+    <a href="{{ url_for('user_bp.home')}}" style="text-decoration: none; color: black; margin-top: 10px;" id="home_during_quiz">
+        <i class="fa fa-2x fa-home"></i>
+    </a>
     {%set percent = quiz_details[-1]["score"] / quiz_details[-1]["length"] * 100 %}
+
     <div class="remarks-container">
 
         <h2>Thanks for taking our Quiz!!</h2>
     
-        <h4>Final Score Percentage: {{ percent }}%</h4>
+        <h4>Final Score Percentage: {{ percent|round(2) }}%</h4>
     
         {% set remarks = None %}
         {% if percent %}
-            {% if percent < 25 %}
+            {% if percent|round(2) < 25 %}
                 {% set remarks = "You didn't do well, there's more room for improvement 😊" %}
-            {% elif percent >= 25 and percent < 50 %}
+            {% elif percent|round(2) >= 25 and percent|round(2) < 50 %}
                 {% set remarks = "Good work, but you can do better 😉" %}
-            {% elif percent >= 50 and percent < 75 %}
+            {% elif percent|round(2) >= 50 and percent|round(2) < 75 %}
                 {% set remarks = "That was awesome, a bit higher next time? 🤔" %}
-            {% elif percent >= 75 and percent <= 100 %}
+            {% elif percent|round(2) >= 75 and percent|round(2) <= 100 %}
                 {% set remarks = "Excellent work, keep it up! 🥳" %}
-            {% elif percent > 100 %}
+            {% elif percent|round(2) > 100 %}
                 {% set remarks = "Wow! Over 100%? Double-check your score calculation! 🤔" %}
             {% else %}
                 {% set remarks = "You sure you took the test? 🤷" %}
