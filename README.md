@@ -83,10 +83,10 @@ QUIZZERZ/<br>
 
 ## Technologies Used
 
-- Flask (framework)
-- Supabase (Postgresql database)
-- Bootstrap: Front-end framework for responsive web design
-- Javascript: For making the app dynamic
+- Flask (framework).
+- Supabase (Postgresql database).
+- Bootstrap: Front-end framework for responsive web design.
+- Javascript: For making the app dynamic.
 
 ## License
 
